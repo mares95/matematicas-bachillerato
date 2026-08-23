@@ -176,6 +176,28 @@
     padding:22px 20px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;
   }
 
+  .year{
+    border:1.5px solid var(--line); border-radius:var(--radius); background:#fcfcfa;
+    margin-bottom:18px; overflow:hidden;
+  }
+  #panel-math .year{border-top:4px solid var(--math);}
+  #panel-tech .year{border-top:4px solid var(--tech);}
+  .year-toggle{
+    width:100%; text-align:left; background:none; border:none;
+    padding:16px 18px; cursor:pointer; display:flex; align-items:center;
+    justify-content:space-between; font-family:inherit; font-size:17px;
+    font-weight:800; color:var(--ink);
+  }
+  .year-toggle .chevron{
+    font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);
+    transition:transform .2s ease; font-size:14px;
+  }
+  .year.open .year-toggle .chevron{transform:rotate(90deg);}
+  .year-body{display:none; padding:0 14px 16px;}
+  .year.open .year-body{display:block;}
+  .topic-toggle small{font-weight:400; color:var(--ink-soft); font-size:12.5px;}
+  .year-note{font-size:13.5px; color:var(--ink-soft); margin:0 4px 4px;}
+
   footer{
     max-width:920px; margin:0 auto; padding:20px; color:var(--ink-soft);
     font-size:12.5px; font-family:'IBM Plex Mono',monospace; border-top:1.5px solid var(--line);
@@ -200,13 +222,13 @@
       <button class="subject-card math" onclick="showPanel('math')">
         <span class="eyebrow">Bachillerato</span>
         <h2>Matemáticas</h2>
-        <p>12 unidades: de números reales a probabilidad y estadística, con práctica interactiva.</p>
+        <p>3 años · 6 semestres, de Pensamiento Matemático a Cálculo Integral.</p>
         <span class="go">→</span>
       </button>
       <button class="subject-card tech" onclick="showPanel('tech')">
         <span class="eyebrow">Secundaria · Bachillerato</span>
         <h2>Tecnología</h2>
-        <p>Informática, robótica y proyectos prácticos. (Próximamente)</p>
+        <p>3 años · 6 semestres. Año 1 disponible; años 2 y 3 próximamente.</p>
         <span class="go">→</span>
       </button>
     </div>
@@ -219,344 +241,185 @@
       <button class="back-btn" onclick="showHome()">← Volver</button>
     </div>
 
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 1 — Números reales, potencias, radicales y logaritmos</span><span class="chevron">›</span>
+    <div class="year">
+      <button class="year-toggle" onclick="toggleTopic(this)">
+        <span>Año 1</span><span class="chevron">›</span>
       </button>
-      <div class="topic-body">
-        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 8 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m1-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m1-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m1-examenes')">Exámenes</button>
+      <div class="year-body">
+
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 1 — Pensamiento Matemático I <small>(aritmética y álgebra)</small></span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active math-active" onclick="showTab(this,'s1-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'s1-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'s1-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="s1-material">
+              <ol>
+                <li>Números y operaciones básicas</li>
+                <li>Operaciones algebraicas</li>
+                <li>Ecuaciones lineales y cuadráticas</li>
+                <li>Sistemas de ecuaciones</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="s1-ejercicios">
+              <p>Ejercicios generados automáticamente con corrección al instante.</p>
+              <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+            </div>
+            <div class="tab-content" id="s1-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
         </div>
-        <div class="tab-content active" id="m1-material">
-          <ul>
-            <li>Clasificar números en ℕ, ℤ, ℚ, ℐ, ℝ y operar con intervalos</li>
-            <li>Manejar el valor absoluto y resolver ecuaciones e inecuaciones con él</li>
-            <li>Operar con potencias de exponente entero y fraccionario, y con radicales</li>
-            <li>Racionalizar denominadores</li>
-            <li>Definir el logaritmo y aplicar sus propiedades</li>
-            <li>Aproximar, acotar el error y usar notación científica</li>
-          </ul>
+
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 2 — Pensamiento Matemático II <small>(geometría y trigonometría)</small></span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active math-active" onclick="showTab(this,'s2-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'s2-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'s2-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="s2-material">
+              <ol>
+                <li>Desigualdades</li>
+                <li>Ángulos y triángulos</li>
+                <li>Funciones trigonométricas</li>
+                <li>Identidades trigonométricas y triángulos oblicuángulos</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="s2-ejercicios">
+              <p>Ejercicios generados automáticamente con corrección al instante.</p>
+              <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+            </div>
+            <div class="tab-content" id="s2-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
         </div>
-        <div class="tab-content" id="m1-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m1-examenes">
-          <ul><li>Próximamente</li></ul>
-        </div>
+
       </div>
     </div>
 
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 2 — Polinomios y fracciones algebraicas</span><span class="chevron">›</span>
+    <div class="year">
+      <button class="year-toggle" onclick="toggleTopic(this)">
+        <span>Año 2</span><span class="chevron">›</span>
       </button>
-      <div class="topic-body">
-        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 7 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m2-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m2-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m2-examenes')">Exámenes</button>
+      <div class="year-body">
+
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 3 — Matemáticas III <small>(geometría analítica)</small></span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active math-active" onclick="showTab(this,'s3-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'s3-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'s3-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="s3-material">
+              <ol>
+                <li>Ejes coordenados</li>
+                <li>La recta</li>
+                <li>La circunferencia</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="s3-ejercicios">
+              <p>Ejercicios generados automáticamente con corrección al instante.</p>
+              <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+            </div>
+            <div class="tab-content" id="s3-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
         </div>
-        <div class="tab-content active" id="m2-material">
-          <ul>
-            <li>Operar con polinomios y dividir por Ruffini</li>
-            <li>Aplicar los teoremas del resto y del factor</li>
-            <li>Factorizar polinomios buscando raíces racionales</li>
-            <li>Simplificar y operar fracciones algebraicas</li>
-            <li>Desarrollar potencias con el binomio de Newton</li>
-          </ul>
+
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 4 — Matemáticas IV <small>(cónicas y funciones)</small></span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active math-active" onclick="showTab(this,'s4-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'s4-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'s4-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="s4-material">
+              <ol start="4">
+                <li>La parábola</li>
+                <li>La elipse</li>
+                <li>La hipérbola</li>
+                <li>Identificación de cónicas</li>
+                <li>Funciones</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="s4-ejercicios">
+              <p>Ejercicios generados automáticamente con corrección al instante.</p>
+              <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+            </div>
+            <div class="tab-content" id="s4-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
         </div>
-        <div class="tab-content" id="m2-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m2-examenes"><ul><li>Próximamente</li></ul></div>
+
       </div>
     </div>
 
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 3 — Ecuaciones, inecuaciones y sistemas</span><span class="chevron">›</span>
+    <div class="year">
+      <button class="year-toggle" onclick="toggleTopic(this)">
+        <span>Año 3</span><span class="chevron">›</span>
       </button>
-      <div class="topic-body">
-        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 9 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m3-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m3-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m3-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m3-material">
-          <ul>
-            <li>Resolver ecuaciones de 2.º grado, bicuadradas, racionales e irracionales</li>
-            <li>Resolver ecuaciones exponenciales y logarítmicas</li>
-            <li>Resolver inecuaciones polinómicas y racionales, y sistemas de inecuaciones</li>
-            <li>Resolver sistemas lineales (Gauss) y no lineales</li>
-            <li>Plantear y resolver problemas mediante ecuaciones</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m3-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m3-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
+      <div class="year-body">
 
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 4 — Trigonometría</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Geometría · Matemáticas I · 10 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m4-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m4-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m4-examenes')">Exámenes</button>
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 5 — Cálculo Diferencial</span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active math-active" onclick="showTab(this,'s5-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'s5-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'s5-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="s5-material">
+              <ol>
+                <li>Función</li>
+                <li>Límites y continuidad</li>
+                <li>Derivadas</li>
+                <li>Aplicaciones de las derivadas en diversas áreas</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="s5-ejercicios">
+              <p>Ejercicios generados automáticamente con corrección al instante.</p>
+              <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+            </div>
+            <div class="tab-content" id="s5-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
         </div>
-        <div class="tab-content active" id="m4-material">
-          <ul>
-            <li>Convertir grados ↔ radianes y usar la circunferencia goniométrica</li>
-            <li>Conocer las razones de los ángulos notables y reducir al primer cuadrante</li>
-            <li>Demostrar y aplicar identidades trigonométricas</li>
-            <li>Usar las fórmulas de suma, diferencia, ángulo doble y ángulo mitad</li>
-            <li>Resolver ecuaciones trigonométricas</li>
-            <li>Resolver triángulos cualesquiera con los teoremas del seno y del coseno</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m4-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m4-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
 
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 5 — Números complejos</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 6 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m5-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m5-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m5-examenes')">Exámenes</button>
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 6 — Cálculo Integral</span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active math-active" onclick="showTab(this,'s6-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'s6-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'s6-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="s6-material">
+              <ol start="5">
+                <li>Concepto de integral como antiderivada</li>
+                <li>Integrales algebraicas y de funciones trascendentes</li>
+                <li>Integrales definidas</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="s6-ejercicios">
+              <p>Ejercicios generados automáticamente con corrección al instante.</p>
+              <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+            </div>
+            <div class="tab-content" id="s6-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
         </div>
-        <div class="tab-content active" id="m5-material">
-          <ul>
-            <li>Operar en forma binómica y representar en el plano complejo</li>
-            <li>Pasar entre formas binómica, polar y trigonométrica</li>
-            <li>Multiplicar, dividir y potenciar en forma polar (De Moivre)</li>
-            <li>Calcular las n raíces n-ésimas de un complejo</li>
-            <li>Resolver ecuaciones con soluciones complejas</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m5-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m5-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
 
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 6 — Geometría analítica: vectores, rectas y cónicas</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Geometría · Matemáticas I (plano) y II (espacio) · 12 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m6-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m6-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m6-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m6-material">
-          <ul>
-            <li>Operar con vectores en el plano y usar el producto escalar</li>
-            <li>Escribir la recta en todas sus formas y estudiar posiciones relativas</li>
-            <li>Calcular ángulos y distancias</li>
-            <li>Identificar y escribir las ecuaciones de las cónicas</li>
-            <li>(Mates II) Vectores, rectas y planos en el espacio: productos vectorial y mixto</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m6-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m6-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
-
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 7 — Funciones elementales</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Análisis · Matemáticas I · 8 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m7-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m7-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m7-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m7-material">
-          <ul>
-            <li>Calcular dominio y recorrido de las funciones elementales</li>
-            <li>Operar y componer funciones; hallar la función inversa</li>
-            <li>Reconocer simetrías, periodicidad, monotonía y acotación</li>
-            <li>Representar funciones a partir de transformaciones elementales</li>
-            <li>Identificar y usar la función exponencial, logarítmica y las trigonométricas</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m7-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m7-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
-
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 8 — Límites y continuidad</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Análisis · Matemáticas I–II · 9 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m8-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m8-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m8-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m8-material">
-          <ul>
-            <li>Calcular límites laterales e infinitos</li>
-            <li>Resolver las indeterminaciones 0/0, ∞/∞, ∞−∞, 0·∞ y 1<sup>∞</sup></li>
-            <li>Hallar las asíntotas de una función</li>
-            <li>Estudiar la continuidad y clasificar las discontinuidades</li>
-            <li>Aplicar el teorema de Bolzano</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m8-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m8-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
-
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 9 — Derivadas y aplicaciones</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Análisis · Matemáticas I–II · 12 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m9-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m9-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m9-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m9-material">
-          <ul>
-            <li>Interpretar la derivada como tasa de variación y pendiente de la tangente</li>
-            <li>Derivar con soltura usando todas las reglas, incluida la regla de la cadena</li>
-            <li>Estudiar monotonía, extremos, curvatura y puntos de inflexión</li>
-            <li>Resolver problemas de optimización</li>
-            <li>Aplicar L'Hôpital y los teoremas de Rolle y del valor medio</li>
-            <li>Representar gráficamente funciones</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m9-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m9-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
-
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 10 — Integrales</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Análisis · Matemáticas II · 11 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m10-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m10-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m10-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m10-material">
-          <ul>
-            <li>Calcular primitivas inmediatas y casi inmediatas</li>
-            <li>Integrar por cambio de variable y por partes</li>
-            <li>Integrar funciones racionales</li>
-            <li>Aplicar la regla de Barrow</li>
-            <li>Calcular áreas de recintos planos y volúmenes de revolución</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m10-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m10-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
-
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 11 — Matrices, determinantes y sistemas</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Álgebra lineal · Matemáticas II · 11 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m11-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m11-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m11-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m11-material">
-          <ul>
-            <li>Operar con matrices y calcular potencias</li>
-            <li>Calcular determinantes de orden 2, 3 y superior, y usar sus propiedades</li>
-            <li>Hallar el rango y la matriz inversa</li>
-            <li>Resolver ecuaciones matriciales</li>
-            <li>Discutir y resolver sistemas con Gauss, Rouché–Frobenius y Cramer</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m11-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m11-examenes"><ul><li>Próximamente</li></ul></div>
-      </div>
-    </div>
-
-    <div class="topic">
-      <button class="topic-toggle" onclick="toggleTopic(this)">
-        <span>Unidad 12 — Combinatoria, probabilidad y estadística</span><span class="chevron">›</span>
-      </button>
-      <div class="topic-body">
-        <p class="unit-meta">Estadística y Probabilidad · Matemáticas I–II · 12 sesiones</p>
-        <div class="tabs">
-          <button class="tab-btn active math-active" onclick="showTab(this,'m12-material')">Material</button>
-          <button class="tab-btn" onclick="showTab(this,'m12-ejercicios')">Ejercicios</button>
-          <button class="tab-btn" onclick="showTab(this,'m12-examenes')">Exámenes</button>
-        </div>
-        <div class="tab-content active" id="m12-material">
-          <ul>
-            <li>Contar con variaciones, permutaciones y combinaciones</li>
-            <li>Calcular probabilidades con la regla de Laplace y las propiedades de la probabilidad</li>
-            <li>Aplicar probabilidad condicionada, independencia, probabilidad total y Bayes</li>
-            <li>Manejar la distribución binomial y la normal (y la aproximación entre ambas)</li>
-            <li>Analizar distribuciones bidimensionales: correlación y regresión</li>
-          </ul>
-        </div>
-        <div class="tab-content" id="m12-ejercicios">
-          <p>Ejercicios generados automáticamente con corrección al instante.</p>
-          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
-        </div>
-        <div class="tab-content" id="m12-examenes"><ul><li>Próximamente</li></ul></div>
       </div>
     </div>
   </section>
@@ -568,9 +431,75 @@
       <button class="back-btn" onclick="showHome()">← Volver</button>
     </div>
 
-    <div class="tech-soon">
-      Todavía estamos preparando el temario de Tecnología (Informática, Robótica y proyectos prácticos).
-      Vuelve pronto — mientras tanto puedes consultar la sección de Matemáticas.
+    <div class="year">
+      <button class="year-toggle" onclick="toggleTopic(this)">
+        <span>Año 1 — Tecnología I y II</span><span class="chevron">›</span>
+      </button>
+      <div class="year-body">
+
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 1</span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active tech-active" onclick="showTab(this,'t1-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'t1-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'t1-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="t1-material">
+              <ol>
+                <li>Fundamentos para operar tecnología de forma eficiente</li>
+                <li>Ciudadanía digital responsable</li>
+                <li>Creación de contenido digital</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="t1-ejercicios"><ul><li>Próximamente</li></ul></div>
+            <div class="tab-content" id="t1-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
+        </div>
+
+        <div class="topic">
+          <button class="topic-toggle" onclick="toggleTopic(this)">
+            <span>Semestre 2</span><span class="chevron">›</span>
+          </button>
+          <div class="topic-body">
+            <div class="tabs">
+              <button class="tab-btn active tech-active" onclick="showTab(this,'t2-material')">Material</button>
+              <button class="tab-btn" onclick="showTab(this,'t2-ejercicios')">Ejercicios</button>
+              <button class="tab-btn" onclick="showTab(this,'t2-examenes')">Exámenes</button>
+            </div>
+            <div class="tab-content active" id="t2-material">
+              <ol start="4">
+                <li>Búsqueda, evaluación y curaduría de información</li>
+                <li>Creatividad con tecnología para diseñar soluciones a problemas de su entorno</li>
+                <li>El pensamiento computacional como estrategia para la solución de problemas</li>
+              </ol>
+            </div>
+            <div class="tab-content" id="t2-ejercicios"><ul><li>Próximamente</li></ul></div>
+            <div class="tab-content" id="t2-examenes"><ul><li>Próximamente</li></ul></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="year open">
+      <div class="year-toggle" style="cursor:default">
+        <span>Año 2</span>
+      </div>
+      <div class="year-body" style="display:block">
+        <p class="year-note">Temario de Tecnología III y IV — próximamente.</p>
+      </div>
+    </div>
+
+    <div class="year open">
+      <div class="year-toggle" style="cursor:default">
+        <span>Año 3</span>
+      </div>
+      <div class="year-body" style="display:block">
+        <p class="year-note">Temario de Tecnología V y VI — próximamente.</p>
+      </div>
     </div>
   </section>
 
