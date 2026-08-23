@@ -404,7 +404,7 @@ add('polinomios',3,()=>{
   const co=comb(n,k)*a**k*b**(n-k);
   return {en:`Halla el coeficiente de x<sup>${k}</sup> en el desarrollo de&nbsp; (${a===1?'':a}x ${sgn(b)})<sup>${n}</sup>`,
     ca:[{et:'coeficiente =',tipo:'num',resp:String(co)}],
-    pi:`Término general: C(${n},k)·(${a}x)<sup>${n}</sup><sup>−k</sup>·(${b})<sup>k</sup>. Busca el que deja x<sup>${k}</sup>.`,
+    pi:`Término general: C(${n},j)·(${a}x)<sup>j</sup>·(${b})<sup>${n}−j</sup>. El término con x<sup>${k}</sup> corresponde a j = ${k}.`,
     so:`C(${n},${k})·${a}<sup>${k}</sup>·(${b})<sup>${n-k}</sup> = ${comb(n,k)} · ${a**k} · ${b**(n-k)} = <b>${co}</b>`};
 });
 add('polinomios',3,()=>{
