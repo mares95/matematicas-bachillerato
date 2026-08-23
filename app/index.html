@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica de Matemáticas · Bachillerato</title>
+<style>
+:root{
+  --bg:#0f1216; --bg2:#161b22; --bg3:#1c232c; --line:#2a3340;
+  --fg:#e6edf3; --fg2:#9fb0c3; --acc:#4c9aff; --acc2:#7ee2b8;
+  --ok:#3fb950; --bad:#f0616d; --warn:#e3b341;
+  --radius:12px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;line-height:1.55}
+header{background:linear-gradient(135deg,#1b2430,#141b24);border-bottom:1px solid var(--line);
+  padding:14px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+h1{font-size:19px;margin:0;font-weight:650;letter-spacing:.2px}
+h1 span{color:var(--acc)}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 20px 60px}
+.grid{display:grid;grid-template-columns:1fr 300px;gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.card h2{margin:0 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--fg2);font-weight:600}
+
+/* controles */
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:var(--bg3);border:1px solid var(--line);color:var(--fg2);border-radius:999px;
+  padding:5px 12px;font-size:12.5px;cursor:pointer;user-select:none;transition:.12s}
+.chip:hover{border-color:var(--acc);color:var(--fg)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#06101d;font-weight:600}
+.btn{background:var(--acc);color:#06101d;border:0;border-radius:9px;padding:9px 16px;
+  font-size:14px;font-weight:600;cursor:pointer;transition:.12s}
+.btn:hover{filter:brightness(1.12)}
+.btn.sec{background:var(--bg3);color:var(--fg);border:1px solid var(--line)}
+.btn.sec:hover{border-color:var(--acc)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+select{background:var(--bg3);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px}
+
+/* ejercicio */
+#enun{font-size:19px;margin:6px 0 18px;line-height:1.9}
+.tag{display:inline-block;background:var(--bg3);border:1px solid var(--line);color:var(--fg2);
+  border-radius:6px;padding:2px 9px;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase}
+.campo{display:flex;align-items:center;gap:10px;margin:9px 0;flex-wrap:wrap}
+.campo label{min-width:120px;color:var(--fg2);font-size:15px}
+.campo input{background:#0b0e13;border:1.5px solid var(--line);color:var(--fg);border-radius:8px;
+  padding:9px 12px;font-size:16px;font-family:"Consolas","SF Mono",monospace;width:230px;outline:none}
+.campo input:focus{border-color:var(--acc)}
+.campo input.ok{border-color:var(--ok);background:#0d1a10}
+.campo input.bad{border-color:var(--bad);background:#1c0f11}
+.ops{display:flex;flex-direction:column;gap:7px;margin:10px 0}
+.op{background:var(--bg3);border:1.5px solid var(--line);border-radius:9px;padding:10px 14px;
+  cursor:pointer;font-size:16px;transition:.12s}
+.op:hover{border-color:var(--acc)}
+.op.sel{border-color:var(--acc);background:#16283f}
+.op.ok{border-color:var(--ok);background:#0d1a10}
+.op.bad{border-color:var(--bad);background:#1c0f11}
+#fb{margin:14px 0 0;padding:12px 14px;border-radius:9px;font-size:15px;display:none}
+#fb.ok{display:block;background:#0d1a10;border:1px solid var(--ok);color:#9ae6a8}
+#fb.bad{display:block;background:#1c0f11;border:1px solid var(--bad);color:#f2a8ad}
+#panel{margin-top:14px;padding:14px;background:#101821;border:1px dashed var(--line);
+  border-radius:9px;font-size:15px;display:none;line-height:1.85}
+#panel b{color:var(--acc2)}
+
+/* matemáticas */
+.frac{display:inline-flex;flex-direction:column;vertical-align:-0.55em;text-align:center;margin:0 3px;font-size:.92em}
+.frac .n{border-bottom:1.4px solid currentColor;padding:0 5px;line-height:1.25}
+.frac .d{padding:0 5px;line-height:1.25}
+.sq{white-space:nowrap}
+.sq .rad{border-top:1.4px solid currentColor;padding:0 3px 0 2px;margin-left:-1px}
+.per{border-top:1.5px solid currentColor}
+.mat{display:inline-flex;align-items:center;vertical-align:middle;margin:0 4px}
+.mat .par{font-size:2.4em;font-weight:200;line-height:.9}
+.mat table{border-collapse:collapse;margin:0 2px}
+.mat td{padding:2px 9px;text-align:center;font-size:.92em}
+.sys{display:inline-block;border-left:2px solid currentColor;padding-left:11px;margin:4px 0}
+.sys div{line-height:1.7}
+code{background:var(--bg3);padding:1px 6px;border-radius:5px;font-size:.88em;color:var(--acc2)}
+
+/* stats */
+.stat{display:flex;justify-content:space-between;padding:5px 0;font-size:14px;border-bottom:1px solid #1f2731}
+.stat:last-child{border:0}
+.stat b{font-variant-numeric:tabular-nums}
+.bar{height:7px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-top:5px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.mini{font-size:12px;color:var(--fg2)}
+table.tt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.tt td{padding:4px 2px;border-bottom:1px solid #1f2731}
+table.tt td:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--fg2)}
+.hidden{display:none!important}
+#ayuda{font-size:13px;color:var(--fg2);line-height:1.9}
+#ayuda code{font-size:12.5px}
+#examfin li{margin:7px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📐 Práctica de <span>Matemáticas</span> · Bachillerato</h1>
+  <div class="row" style="margin-left:auto">
+    <select id="nivel">
+      <option value="1">Nivel: básico</option>
+      <option value="2" selected>Nivel: medio</option>
+      <option value="3">Nivel: avanzado</option>
+    </select>
+    <button class="btn sec" id="bModo">Modo examen</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card" style="margin-bottom:18px">
+    <h2>Temas</h2>
+    <div class="chips" id="chips"></div>
+    <div class="row" style="margin-top:13px">
+      <button class="btn sec" id="bTodos">Todos</button>
+      <button class="btn sec" id="bNinguno">Ninguno</button>
+      <span class="mini" id="cuenta"></span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card" id="cEj">
+        <div class="row" style="justify-content:space-between">
+          <span class="tag" id="tagTema">—</span>
+          <span class="mini" id="progExam"></span>
+        </div>
+        <div id="enun">Elige uno o varios temas y pulsa <b>Empezar</b>.</div>
+        <div id="campos"></div>
+        <div id="fb"></div>
+        <div id="panel"></div>
+        <div class="row" style="margin-top:16px">
+          <button class="btn" id="bComprobar">Comprobar</button>
+          <button class="btn sec" id="bPista">Pista</button>
+          <button class="btn sec" id="bSol">Ver solución</button>
+          <button class="btn sec" id="bSig">Siguiente ⏎</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="cExamFin" style="margin-top:18px">
+        <h2>Resultado del examen</h2>
+        <div id="examfin"></div>
+        <button class="btn" id="bReintentar" style="margin-top:12px">Nuevo examen</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>Sesión</h2>
+        <div class="stat"><span>Aciertos</span><b id="sOk">0 / 0</b></div>
+        <div class="stat"><span>Racha actual</span><b id="sRacha">0</b></div>
+        <div class="stat"><span>Mejor racha</span><b id="sMejor">0</b></div>
+        <div class="stat"><span>Puntos</span><b id="sPts">0</b></div>
+        <div class="bar"><i id="barra" style="width:0%"></i></div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>Histórico por tema</h2>
+        <table class="tt" id="tabla"></table>
+        <button class="btn sec" id="bReset" style="margin-top:12px;width:100%">Borrar histórico</button>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>Cómo escribir respuestas</h2>
+        <div id="ayuda">
+          Potencias <code>x^2</code> · raíces <code>sqrt(5)</code> o <code>x^(1/3)</code><br>
+          Fracciones <code>3/4</code> · decimales <code>0.75</code> o <code>0,75</code><br>
+          Constantes <code>pi</code>, <code>e</code> · producto <code>2*x</code> o <code>2x</code><br>
+          Funciones <code>sin cos tan ln log exp abs arctan</code><br>
+          En integrales no hace falta escribir <code>+C</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ══════════════════════════ 1. UTILIDADES ══════════════════════════ */
+const R = {
+  i:(a,b)=>Math.floor(Math.random()*(b-a+1))+a,
+  nz:(a,b)=>{let v=0;while(v===0)v=R.i(a,b);return v;},
+  pick:a=>a[Math.floor(Math.random()*a.length)],
+  sg:()=>Math.random()<0.5?-1:1
+};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){const t=b;b=a%b;a=t;}return a||1;};
+function fr(n,d){if(d<0){n=-n;d=-d;}const g=gcd(n,d);return [n/g,d/g];}
+const fact=n=>{let r=1;for(let i=2;i<=n;i++)r*=i;return r;};
+const comb=(n,k)=>(k<0||k>n)?0:Math.round(fact(n)/(fact(k)*fact(n-k)));
+const det3=m=>m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])
+            -m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])
+            +m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
+const rnd=(x,d)=>Math.round(x*10**d)/10**d;
+
+/* ── render matemático ── */
+const MIN='−';
+function fh(n,d){const[a,b]=fr(n,d);if(b===1)return String(a).replace('-',MIN);
+  return (a<0?MIN:'')+`<span class="frac"><span class="n">${Math.abs(a)}</span><span class="d">${b}</span></span>`;}
+function fhx(n,d){return `<span class="frac"><span class="n">${n}</span><span class="d">${d}</span></span>`;}
+const sq=x=>`<span class="sq">√<span class="rad">${x}</span></span>`;
+const sup=(b,e)=>e===1?b:`${b}<sup>${e}</sup>`;
+function pol(cs,v='x'){ // cs de mayor a menor grado
+  const g=cs.length-1;let out='';
+  cs.forEach((c,i)=>{const p=g-i;if(c===0)return;
+    const s=out?(c<0?' '+MIN+' ':' + '):(c<0?MIN:'');
+    const a=Math.abs(c);
+    const ct=(a===1&&p>0)?'':String(a);
+    const vt=p===0?'':(p===1?v:`${v}<sup>${p}</sup>`);
+    out+=s+ct+vt;});
+  return out||'0';
+}
+const sgn=c=>(c<0?' '+MIN+' ':' + ')+Math.abs(c);
+function matHTML(m){
+  let t='<table>'+m.map(r=>'<tr>'+r.map(x=>`<td>${String(x).replace('-',MIN)}</td>`).join('')+'</tr>').join('')+'</table>';
+  return `<span class="mat"><span class="par">(</span>${t}<span class="par">)</span></span>`;
+}
+const sys=ls=>`<span class="sys">${ls.map(l=>`<div>${l}</div>`).join('')}</span>`;
+
+/* ══════════════════════════ 2. PARSER ══════════════════════════ */
+const FUNCS={sin:Math.sin,cos:Math.cos,tan:Math.tan,asin:Math.asin,acos:Math.acos,
+  atan:Math.atan,arcsin:Math.asin,arccos:Math.acos,arctan:Math.atan,
+  ln:Math.log,log:x=>Math.log10(x),sqrt:Math.sqrt,exp:Math.exp,abs:Math.abs,
+  senh:Math.sinh,cosh:Math.cosh,sen:Math.sin,tg:Math.tan,raiz:Math.sqrt};
+const CONST={pi:Math.PI,e:Math.E,PI:Math.PI};
+
+function tokenize(s){
+  s=String(s).replace(/,/g,'.').replace(/\s+/g,'').replace(/[·×]/g,'*').replace(/[−–—]/g,'-');
+  const t=[];let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(/[0-9.]/.test(c)){let j=i;while(j<s.length&&/[0-9.]/.test(s[j]))j++;
+      t.push({t:'n',v:parseFloat(s.slice(i,j))});i=j;}
+    else if(/[a-zA-Z]/.test(c)){let j=i;while(j<s.length&&/[a-zA-Z]/.test(s[j]))j++;
+      t.push({t:'id',v:s.slice(i,j)});i=j;}
+    else if('+-*/^()'.includes(c)){t.push({t:c});i++;}
+    else throw new Error('car');
+  }
+  return t;
+}
+function parse(str){
+  const t=tokenize(str);let p=0;
+  const peek=()=>t[p], eat=k=>{if(t[p]&&t[p].t===k){p++;return true;}return false;};
+  const startsFactor=()=>{const k=peek();return k&&(k.t==='n'||k.t==='id'||k.t==='(');};
+  function expr(){let a=term();
+    while(peek()&&(peek().t==='+'||peek().t==='-')){const o=t[p++].t;const b=term();
+      a=o==='+'?bin(a,b,(x,y)=>x+y):bin(a,b,(x,y)=>x-y);}
+    return a;}
+  function term(){let a=unary();
+    for(;;){
+      if(eat('*')) a=bin(a,unary(),(x,y)=>x*y);
+      else if(eat('/')) a=bin(a,unary(),(x,y)=>x/y);
+      else if(startsFactor()) a=bin(a,unary(),(x,y)=>x*y);
+      else break;}
+    return a;}
+  function unary(){
+    if(eat('-')){const a=unary();return v=>-a(v);}
+    if(eat('+'))return unary();
+    return power();}
+  function power(){const a=atom();
+    if(eat('^')){const b=unary();return v=>Math.pow(a(v),b(v));}
+    return a;}
+  function atom(){
+    const k=peek();
+    if(!k) throw new Error('fin');
+    if(k.t==='n'){p++;return ()=>k.v;}
+    if(k.t==='('){p++;const a=expr();if(!eat(')'))throw new Error(')');return a;}
+    if(k.t==='id'){
+      p++;const name=k.v;
+      if(FUNCS[name]){const f=FUNCS[name];
+        let arg;
+        if(eat('(')){arg=expr();if(!eat(')'))throw new Error(')');}
+        else arg=power();
+        return v=>f(arg(v));}
+      if(name in CONST){const c=CONST[name];return ()=>c;}
+      if(name.length===1) return v=>(v&&name in v)?v[name]:NaN;
+      throw new Error('id '+name);}
+    throw new Error('tok');
+  }
+  const bin=(a,b,f)=>v=>f(a(v),b(v));
+  const fn=expr();
+  if(p!==t.length) throw new Error('resto');
+  return fn;
+}
+function evalNum(s){try{const f=parse(s);const v=f({});return (typeof v==='number'&&isFinite(v))?v:NaN;}catch(e){return NaN;}}
+function sameFn(u,r,dom,upToConst){
+  let fu,fr_;
+  try{fu=parse(u);fr_=parse(r);}catch(e){return false;}
+  const lo=dom?dom[0]:0.37, hi=dom?dom[1]:2.13;
+  const ds=[];let val=0;
+  for(let i=0;i<16;i++){
+    const x=lo+(hi-lo)*(i+0.5)/16+0.011*Math.sin(i*5.3);
+    let a,b;
+    try{a=fu({x});b=fr_({x});}catch(e){return false;}
+    if(!isFinite(a)||!isFinite(b))continue;
+    val++;
+    if(upToConst) ds.push(a-b);
+    else if(Math.abs(a-b)>1e-6*(1+Math.abs(b))) return false;
+  }
+  if(val<5) return false;
+  if(upToConst){const mx=Math.max(...ds),mn=Math.min(...ds);return (mx-mn)<=1e-6*(1+Math.abs(mx));}
+  return true;
+}
+const ACENTOS=new RegExp('[\\u0300-\\u036f]','g');
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(ACENTOS,'').replace(/[\s.\-_]/g,'');
+
+/* ══════════════════════════ 3. GENERADORES ══════════════════════════ */
+const TEMAS=[
+ {id:'numeros',      n:1,  nom:'Números reales'},
+ {id:'polinomios',   n:2,  nom:'Polinomios'},
+ {id:'ecuaciones',   n:3,  nom:'Ecuaciones y sistemas'},
+ {id:'trigonometria',n:4,  nom:'Trigonometría'},
+ {id:'complejos',    n:5,  nom:'Complejos'},
+ {id:'geometria',    n:6,  nom:'Geometría analítica'},
+ {id:'funciones',    n:7,  nom:'Funciones'},
+ {id:'limites',      n:8,  nom:'Límites'},
+ {id:'derivadas',    n:9,  nom:'Derivadas'},
+ {id:'integrales',   n:10, nom:'Integrales'},
+ {id:'matrices',     n:11, nom:'Matrices'},
+ {id:'probabilidad', n:12, nom:'Probabilidad'}
+];
+const GEN={}; TEMAS.forEach(t=>GEN[t.id]=[]);
+const add=(tema,nivel,f)=>GEN[tema].push({nivel,f});
+
+/* ───────── TEMA 1 · Números reales ───────── */
+add('numeros',1,()=>{
+  const b=R.pick([2,3,5,10]), k=R.i(-2,5);
+  const disp = k>=0 ? String(b**k) : fhx(1,b**(-k));
+  return {en:`Calcula sin calculadora:&nbsp; log<sub>${b}</sub>&thinsp;${disp}`,
+    ca:[{et:'=',tipo:'num',resp:String(k)}],
+    pi:`¿A qué exponente hay que elevar ${b} para obtener ese número?`,
+    so:`${b}<sup>${k}</sup> = ${disp}, por definición de logaritmo el resultado es <b>${k}</b>.`};
+});
+add('numeros',2,()=>{
+  let n=R.i(11,98); if(n%11===0)n++;
+  const [p,q]=fr(n,99);
+  return {en:`Expresa como fracción irreducible el decimal periódico &nbsp;0,<span class="per">${n}</span><span class="per">${n}</span>…`,
+    ca:[{et:'=',tipo:'num',resp:`${p}/${q}`}],
+    pi:'Llama x al número, multiplica por 100 y resta.',
+    so:`100x = ${n},${n}… &nbsp;y&nbsp; x = 0,${n}… ⟹ 99x = ${n} ⟹ x = ${fh(n,99)} = <b>${fh(p,q)}</b>`};
+});
+add('numeros',1,()=>{
+  const a=R.i(2,9), b=R.pick([2,3,5,6,7,10,11]);
+  const N=a*a*b;
+  return {en:`Extrae todos los factores posibles de&nbsp; ${sq(N)} &nbsp;y escríbelo como a·${sq('b')}`,
+    ca:[{et:'a =',tipo:'num',resp:String(a)},{et:'b =',tipo:'num',resp:String(b)}],
+    pi:`Descompón ${N} en factores primos y saca las parejas.`,
+    so:`${N} = ${a}² · ${b} ⟹ ${sq(N)} = <b>${a}${sq(b)}</b>`};
+});
+add('numeros',2,()=>{
+  const m=R.pick([2,3,5,7,11]), k=m*R.i(2,6);
+  return {en:`Racionaliza y simplifica:&nbsp; ${fhx(k,sq(m))}`,
+    ca:[{et:'=',tipo:'num',resp:`${k/m}*sqrt(${m})`}],
+    pi:`Multiplica numerador y denominador por ${sq(m)}.`,
+    so:`${fhx(k,sq(m))} = ${fhx(k+'·'+sq(m),m)} = <b>${k/m}${sq(m)}</b>`};
+});
+add('numeros',2,()=>{
+  const a=R.i(1,3), m=R.i(-4,4), r=R.i(1,5);
+  const b=-a*m, c=a*r;
+  return {en:`Resuelve la inecuación&nbsp; |${pol([a,b])}| &lt; ${c} &nbsp;e indica los extremos del intervalo solución.`,
+    ca:[{et:'Extremo izq.',tipo:'num',resp:String(m-r)},{et:'Extremo der.',tipo:'num',resp:String(m+r)}],
+    pi:'|A| &lt; k equivale a −k &lt; A &lt; k.',
+    so:`${MIN}${c} &lt; ${pol([a,b])} &lt; ${c} ⟹ ${a*(m-r)} &lt; ${a}x &lt; ${a*(m+r)} ⟹ x ∈ <b>(${m-r}, ${m+r})</b>`};
+});
+add('numeros',3,()=>{
+  const p=R.i(-3,4),q=R.i(-2,3),r=R.i(-2,3),s=R.i(1,3);
+  const ex=(p+2*q-3*r)*s;
+  return {en:`Expresa como potencia de 2 e indica el exponente:&nbsp; ( 2<sup>${p}</sup> · 4<sup>${q}</sup> : 8<sup>${r}</sup> )<sup>${s}</sup>`,
+    ca:[{et:'exponente =',tipo:'num',resp:String(ex)}],
+    pi:'4 = 2² y 8 = 2³. Después suma y resta exponentes.',
+    so:`(2<sup>${p}</sup>·2<sup>${2*q}</sup>:2<sup>${3*r}</sup>)<sup>${s}</sup> = (2<sup>${p+2*q-3*r}</sup>)<sup>${s}</sup> = 2<sup><b>${ex}</b></sup>`};
+});
+
+/* ───────── TEMA 2 · Polinomios ───────── */
+add('polinomios',1,()=>{
+  const a=R.i(1,3),b=R.i(-4,4),c=R.i(-5,5),d=R.i(-6,6),r=R.nz(-3,3);
+  const P=x=>a*x**3+b*x**2+c*x+d;
+  return {en:`Halla el resto de la división&nbsp; (${pol([a,b,c,d])}) : (x ${r>0?MIN+' '+r:'+ '+(-r)})`,
+    ca:[{et:'Resto =',tipo:'num',resp:String(P(r))}],
+    pi:`Teorema del resto: el resto es P(${r}).`,
+    so:`P(${r}) = ${a}·(${r})³ ${sgn(b)}·(${r})² ${sgn(c)}·(${r}) ${sgn(d)} = <b>${P(r)}</b>`};
+});
+add('polinomios',2,()=>{
+  const r=R.pick([1,-1,2,-2,3]), c=R.i(-5,5), m=R.i(-4,4);
+  const d=-(r**3+m*r**2+c*r);
+  return {en:`Halla <i>m</i> para que&nbsp; x³ + m·x² ${sgn(c)}x ${sgn(d)} &nbsp;sea divisible entre (x ${r>0?MIN+' '+r:'+ '+(-r)})`,
+    ca:[{et:'m =',tipo:'num',resp:String(m)}],
+    pi:`Divisible entre (x − a) ⟺ P(a) = 0. Sustituye x = ${r}.`,
+    so:`P(${r}) = ${r**3} + m·${r**2} ${sgn(c*r)} ${sgn(d)} = 0 ⟹ ${r**2}m = ${-(r**3+c*r+d)} ⟹ m = <b>${m}</b>`};
+});
+add('polinomios',2,()=>{
+  let r=[];while(r.length<3){const v=R.i(-4,4);if(!r.includes(v))r.push(v);}
+  r.sort((x,y)=>x-y);
+  const [p,q,s]=r;
+  const c=[1,-(p+q+s),p*q+p*s+q*s,-p*q*s];
+  return {en:`Factoriza y halla las tres raíces (ordenadas de menor a mayor) de&nbsp; ${pol(c)}`,
+    ca:[{et:'x₁ =',tipo:'num',resp:String(p)},{et:'x₂ =',tipo:'num',resp:String(q)},{et:'x₃ =',tipo:'num',resp:String(s)}],
+    pi:`Prueba con los divisores del término independiente (${-p*q*s}) usando Ruffini.`,
+    so:`P(x) = (x ${p<=0?'+ '+(-p):MIN+' '+p})(x ${q<=0?'+ '+(-q):MIN+' '+q})(x ${s<=0?'+ '+(-s):MIN+' '+s}) ⟹ raíces <b>${p}, ${q}, ${s}</b>`};
+});
+add('polinomios',3,()=>{
+  const a=R.i(1,3),b=R.nz(-3,3),n=R.i(4,7),k=R.i(1,n-1);
+  const co=comb(n,k)*a**k*b**(n-k);
+  return {en:`Halla el coeficiente de x<sup>${k}</sup> en el desarrollo de&nbsp; (${a===1?'':a}x ${sgn(b)})<sup>${n}</sup>`,
+    ca:[{et:'coeficiente =',tipo:'num',resp:String(co)}],
+    pi:`Término general: C(${n},k)·(${a}x)<sup>${n}</sup><sup>−k</sup>·(${b})<sup>k</sup>. Busca el que deja x<sup>${k}</sup>.`,
+    so:`C(${n},${k})·${a}<sup>${k}</sup>·(${b})<sup>${n-k}</sup> = ${comb(n,k)} · ${a**k} · ${b**(n-k)} = <b>${co}</b>`};
+});
+add('polinomios',3,()=>{
+  const p=R.i(1,5);let q=R.i(-5,5);if(q===p||q===-p)q=p+1;
+  return {en:`Simplifica la fracción algebraica&nbsp; ${fhx('x² '+MIN+' '+p*p, pol([1,-(p+q),p*q]))}`,
+    ca:[{et:'=',tipo:'expr',resp:`(x+${p})/(x-(${q}))`,dom:[Math.max(p,q)+0.7,Math.max(p,q)+3]}],
+    pi:'Factoriza numerador (diferencia de cuadrados) y denominador.',
+    so:`${fhx(`(x${MIN}${p})(x+${p})`,`(x${MIN}${p})(x ${q<0?'+ '+(-q):MIN+' '+q})`)} = <b>${fhx('x + '+p,`x ${q<0?'+ '+(-q):MIN+' '+q}`)}</b>`};
+});
+
+/* ───────── TEMA 3 · Ecuaciones y sistemas ───────── */
+add('ecuaciones',1,()=>{
+  let x1=R.i(-6,5),x2=R.i(-5,6);if(x1>x2){const t=x1;x1=x2;x2=t;}if(x1===x2)x2++;
+  const a=R.i(1,2);
+  return {en:`Resuelve:&nbsp; ${pol([a,-a*(x1+x2),a*x1*x2])} = 0`,
+    ca:[{et:'x menor =',tipo:'num',resp:String(x1)},{et:'x mayor =',tipo:'num',resp:String(x2)}],
+    pi:'Usa la fórmula general o factoriza.',
+    so:`Δ = ${(a*(x1+x2))**2-4*a*a*x1*x2} ⟹ x = ${fhx(a*(x1+x2)+' ± '+Math.abs(a*(x2-x1)),2*a)} ⟹ <b>x = ${x1}</b> y <b>x = ${x2}</b>`};
+});
+add('ecuaciones',2,()=>{
+  const p=R.i(1,4);let q=R.i(1,5);if(q===p)q++;
+  return {en:`Resuelve la bicuadrada&nbsp; ${pol([1,0,-(p*p+q*q),0,p*p*q*q])} = 0 &nbsp;e indica las dos raíces positivas.`,
+    ca:[{et:'menor =',tipo:'num',resp:String(Math.min(p,q))},{et:'mayor =',tipo:'num',resp:String(Math.max(p,q))}],
+    pi:'Haz el cambio t = x².',
+    so:`t² ${MIN} ${p*p+q*q}t + ${p*p*q*q} = 0 ⟹ t = ${p*p}, t = ${q*q} ⟹ x = ±${p}, ±${q}. Positivas: <b>${Math.min(p,q)} y ${Math.max(p,q)}</b>`};
+});
+add('ecuaciones',2,()=>{
+  const a=R.pick([2,3,5]),p=R.i(2,4),r=R.i(-2,1),q=R.i(-4,4);
+  const s=q+(p-r)*R.i(-3,3);
+  const x=(s-q)/(p-r);
+  return {en:`Resuelve la ecuación exponencial&nbsp; ${a}<sup>${pol([p,q])}</sup> = ${a}<sup>${pol([r,s])}</sup>`,
+    ca:[{et:'x =',tipo:'num',resp:String(x)}],
+    pi:'Bases iguales ⟹ exponentes iguales.',
+    so:`${pol([p,q])} = ${pol([r,s])} ⟹ ${p-r}x = ${s-q} ⟹ x = <b>${x}</b>`};
+});
+add('ecuaciones',2,()=>{
+  const x0=R.i(-5,5),y0=R.i(-5,5);
+  let a,b,c,d;
+  do{a=R.nz(-4,4);b=R.nz(-4,4);c=R.nz(-4,4);d=R.nz(-4,4);}while(a*d-b*c===0);
+  return {en:`Resuelve el sistema:&nbsp; ${sys([`${a}x ${sgn(b)}y = ${a*x0+b*y0}`,`${c}x ${sgn(d)}y = ${c*x0+d*y0}`])}`,
+    ca:[{et:'x =',tipo:'num',resp:String(x0)},{et:'y =',tipo:'num',resp:String(y0)}],
+    pi:'Reducción: multiplica cada ecuación para eliminar una incógnita.',
+    so:`Determinante = ${a*d-b*c} ≠ 0 ⟹ solución única <b>x = ${x0}, y = ${y0}</b>`};
+});
+add('ecuaciones',3,()=>{
+  const x0=R.i(-3,3),y0=R.i(-3,3),z0=R.i(-3,3);
+  let A;let g=0;
+  do{A=[[R.nz(-3,3),R.i(-3,3),R.i(-3,3)],[R.i(-3,3),R.nz(-3,3),R.i(-3,3)],[R.i(-3,3),R.i(-3,3),R.nz(-3,3)]];g++;}
+  while(Math.abs(det3(A))<1&&g<40);
+  const B=A.map(r=>r[0]*x0+r[1]*y0+r[2]*z0);
+  const li=A.map((r,i)=>`${r[0]}x ${sgn(r[1])}y ${sgn(r[2])}z = ${B[i]}`);
+  return {en:`Resuelve por Gauss:&nbsp; ${sys(li)}`,
+    ca:[{et:'x =',tipo:'num',resp:String(x0)},{et:'y =',tipo:'num',resp:String(y0)},{et:'z =',tipo:'num',resp:String(z0)}],
+    pi:'Escalona la matriz ampliada haciendo ceros bajo la diagonal.',
+    so:`det(A) = ${det3(A)} ≠ 0 ⟹ S.C.D. Solución: <b>(${x0}, ${y0}, ${z0})</b>`};
+});
+add('ecuaciones',2,()=>{
+  let r1=R.i(-4,2),r2=R.i(-1,5);if(r1>=r2)r2=r1+R.i(1,3);
+  const mayor=R.sg()>0;
+  const ops=[`(${MIN}∞, ${r1}) ∪ (${r2}, +∞)`,`(${r1}, ${r2})`,`[${r1}, ${r2}]`,`ℝ`];
+  const resp=mayor?0:1;
+  return {en:`Resuelve la inecuación&nbsp; ${pol([1,-(r1+r2),r1*r2])} ${mayor?'&gt;':'&lt;'} 0`,
+    ca:[{et:'',tipo:'opciones',ops,resp}],
+    pi:`Factoriza: (x ${r1<0?'+':MIN} ${Math.abs(r1)})(x ${r2<0?'+':MIN} ${Math.abs(r2)}) y estudia el signo.`,
+    so:`Raíces ${r1} y ${r2}. La parábola abre hacia arriba: es positiva <i>fuera</i> de las raíces y negativa <i>entre</i> ellas. Solución: <b>${ops[resp]}</b>`};
+});
+
+/* ───────── TEMA 4 · Trigonometría ───────── */
+const ANG=[0,30,45,60,90,120,135,150,180,210,225,240,270,300,315,330];
+const EX={0:'0',30:'1/2',45:'sqrt(2)/2',60:'sqrt(3)/2',90:'1'};
+add('trigonometria',1,()=>{
+  let a,razon,val,txt;
+  do{ a=R.pick(ANG); razon=R.pick(['sin','cos','tan']);
+      val = razon==='sin'?Math.sin(a*Math.PI/180):razon==='cos'?Math.cos(a*Math.PI/180):Math.tan(a*Math.PI/180);
+  }while(!isFinite(val)||Math.abs(val)>50);
+  const nm={sin:'sen',cos:'cos',tan:'tg'}[razon];
+  return {en:`Calcula el <b>valor exacto</b> de&nbsp; ${nm} ${a}°`,
+    ca:[{et:'=',tipo:'num',resp:String(rnd(val,12)),tol:1e-4}],
+    pi:'Reduce al primer cuadrante y aplica la tabla de razones notables. Puedes escribir sqrt(3)/2.',
+    so:`${nm} ${a}° = <b>${rnd(val,4)}</b> (valor exacto en la tabla de notables).`};
+});
+add('trigonometria',2,()=>{
+  const T=R.pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29]]);
+  const cuad=R.pick([1,2,3,4]);
+  const sSig=(cuad===1||cuad===2)?1:-1, cSig=(cuad===1||cuad===4)?1:-1;
+  const sen=sSig*T[0]/T[2], cos=cSig*T[1]/T[2];
+  return {en:`Sabiendo que sen α = ${fh(sSig*T[0],T[2])} &nbsp;y que α está en el <b>${cuad}.º cuadrante</b>, calcula cos α y tg α.`,
+    ca:[{et:'cos α =',tipo:'num',resp:`${cSig*T[1]}/${T[2]}`,tol:1e-6},
+        {et:'tg α =',tipo:'num',resp:`(${sSig*T[0]})/(${cSig*T[1]})`,tol:1e-6}],
+    pi:'sen²α + cos²α = 1. El signo lo decide el cuadrante.',
+    so:`cos²α = 1 ${MIN} ${fh(T[0]*T[0],T[2]*T[2])} = ${fh(T[1]*T[1],T[2]*T[2])} ⟹ cos α = <b>${fh(cSig*T[1],T[2])}</b> (signo del ${cuad}.º cuadrante) y tg α = <b>${fh(sSig*T[0],cSig*T[1])}</b>`};
+});
+add('trigonometria',2,()=>{
+  const k=R.pick([[30,'1/2'],[45,'sqrt(2)/2'],[60,'sqrt(3)/2']]);
+  const v=k[0], val=Math.sin(v*Math.PI/180);
+  return {en:`Resuelve&nbsp; sen x = ${v===30?fhx(1,2):v===45?fhx(sq(2),2):fhx(sq(3),2)} &nbsp;en el intervalo [0°, 360°). Da las dos soluciones en grados.`,
+    ca:[{et:'x₁ =',tipo:'num',resp:String(v)},{et:'x₂ =',tipo:'num',resp:String(180-v)}],
+    pi:'El seno es positivo en el 1.er y 2.º cuadrante: x y 180° − x.',
+    so:`x = ${v}° &nbsp;y&nbsp; x = 180° ${MIN} ${v}° = <b>${180-v}°</b>`};
+});
+add('trigonometria',2,()=>{
+  const b=R.i(4,12),c=R.i(4,12),A=R.pick([60,120]);
+  const a2=b*b+c*c-2*b*c*Math.cos(A*Math.PI/180);
+  return {en:`En un triángulo se conocen b = ${b}, c = ${c} y el ángulo A = ${A}°. Halla el lado <i>a</i> (2 decimales).`,
+    ca:[{et:'a =',tipo:'num',resp:String(rnd(Math.sqrt(a2),6)),tol:0.02}],
+    pi:'Teorema del coseno: a² = b² + c² − 2bc·cos A.',
+    so:`a² = ${b*b} + ${c*c} ${MIN} 2·${b}·${c}·cos ${A}° = ${rnd(a2,3)} ⟹ a = <b>${rnd(Math.sqrt(a2),2)}</b>`};
+});
+add('trigonometria',2,()=>{
+  const b=R.i(5,14),c=R.i(5,14),A=R.pick([30,45,60,120,135]);
+  const S=0.5*b*c*Math.sin(A*Math.PI/180);
+  return {en:`Halla el área del triángulo de lados b = ${b} y c = ${c} que forman un ángulo de ${A}° (2 decimales).`,
+    ca:[{et:'Área =',tipo:'num',resp:String(rnd(S,8)),tol:0.02}],
+    pi:'S = ½·b·c·sen A.',
+    so:`S = ½ · ${b} · ${c} · sen ${A}° = <b>${rnd(S,2)}</b> u²`};
+});
+add('trigonometria',1,()=>{
+  const g=R.pick([30,45,60,90,120,135,150,210,240,270,300,315]);
+  const [p,q]=fr(g,180);
+  return {en:`Expresa ${g}° en radianes (usa <code>pi</code>).`,
+    ca:[{et:'=',tipo:'num',resp:`${p}*pi/${q}`}],
+    pi:'180° = π rad, luego multiplica por π/180.',
+    so:`${g}° · ${fhx('π',180)} = <b>${q===1?p+'π':fhx(p===1?'π':p+'π',q)}</b> rad`};
+});
+
+/* ───────── TEMA 5 · Complejos ───────── */
+const cxTxt=(a,b)=>{ if(b===0) return String(a).replace('-',MIN);
+  if(a===0) return (b===1?'i':b===-1?MIN+'i':String(b).replace('-',MIN)+'i');
+  return `${String(a).replace('-',MIN)} ${b<0?MIN:'+'} ${Math.abs(b)===1?'':Math.abs(b)}i`;};
+add('complejos',1,()=>{
+  const n=R.i(5,60);
+  const v=['1','i',MIN+'1',MIN+'i'][n%4];
+  return {en:`Calcula&nbsp; i<sup>${n}</sup>`,
+    ca:[{et:'',tipo:'opciones',ops:['1','i',MIN+'1',MIN+'i'],resp:n%4}],
+    pi:'Las potencias de i se repiten cada 4. Divide el exponente entre 4 y mira el resto.',
+    so:`${n} = 4·${Math.floor(n/4)} + ${n%4} ⟹ i<sup>${n}</sup> = i<sup>${n%4}</sup> = <b>${v}</b>`};
+});
+add('complejos',1,()=>{
+  const a=R.nz(-5,5),b=R.nz(-5,5),c=R.nz(-5,5),d=R.nz(-5,5);
+  return {en:`Calcula&nbsp; (${cxTxt(a,b)})·(${cxTxt(c,d)})`,
+    ca:[{et:'Parte real',tipo:'num',resp:String(a*c-b*d)},{et:'Parte imaginaria',tipo:'num',resp:String(a*d+b*c)}],
+    pi:'Multiplica como binomios y recuerda que i² = −1.',
+    so:`(${a}${b<0?MIN:'+'}${Math.abs(b)}i)(${c}${d<0?MIN:'+'}${Math.abs(d)}i) = ${a*c} + ${a*d}i + ${b*c}i + ${b*d}i² = <b>${cxTxt(a*c-b*d,a*d+b*c)}</b>`};
+});
+add('complejos',2,()=>{
+  const a=R.nz(-6,6),b=R.nz(-6,6),c=R.nz(-4,4),d=R.nz(-4,4);
+  const m=c*c+d*d;
+  return {en:`Calcula y expresa en forma binómica:&nbsp; ${fhx(cxTxt(a,b),cxTxt(c,d))}`,
+    ca:[{et:'Parte real',tipo:'num',resp:`(${a*c+b*d})/${m}`},{et:'Parte imaginaria',tipo:'num',resp:`(${b*c-a*d})/${m}`}],
+    pi:'Multiplica numerador y denominador por el conjugado del denominador.',
+    so:`Multiplicando por el conjugado: ${fhx(`(${cxTxt(a,b)})(${cxTxt(c,-d)})`,m)} = <b>${fh(a*c+b*d,m)} ${(b*c-a*d)<0?MIN:'+'} ${fh(Math.abs(b*c-a*d),m)}i</b>`};
+});
+add('complejos',2,()=>{
+  const a=R.nz(-5,5),b=R.nz(-5,5);
+  let arg=Math.atan2(b,a)*180/Math.PI; if(arg<0)arg+=360;
+  return {en:`Halla el módulo y el argumento (en grados, entre 0° y 360°) de&nbsp; z = ${cxTxt(a,b)}`,
+    ca:[{et:'|z| =',tipo:'num',resp:String(rnd(Math.hypot(a,b),8)),tol:0.01},
+        {et:'arg z =',tipo:'num',resp:String(rnd(arg,6)),tol:0.5}],
+    pi:'|z| = √(a²+b²). Para el argumento usa tg α = b/a y decide con el cuadrante en que está (a, b).',
+    so:`|z| = √(${a}² + ${b}²) = <b>${rnd(Math.hypot(a,b),3)}</b>; el punto (${a}, ${b}) está en el ${a>0&&b>0?'1.er':a<0&&b>0?'2.º':a<0?'3.er':'4.º'} cuadrante ⟹ arg z = <b>${rnd(arg,2)}°</b>`};
+});
+add('complejos',3,()=>{
+  const r=R.i(1,3),al=R.pick([30,45,60,90,120,135,150]),n=R.i(2,5);
+  return {en:`Aplica la fórmula de De Moivre a&nbsp; (${r}<sub>${al}°</sub>)<sup>${n}</sup> &nbsp;y da el resultado en forma polar (argumento en [0°, 360°)).`,
+    ca:[{et:'módulo =',tipo:'num',resp:String(r**n)},{et:'argumento =',tipo:'num',resp:String((n*al)%360)}],
+    pi:'(r<sub>α</sub>)ⁿ = (rⁿ)<sub>nα</sub>, reduciendo el ángulo a una vuelta.',
+    so:`(${r}<sub>${al}°</sub>)<sup>${n}</sup> = ${r**n}<sub>${n*al}°</sub> = <b>${r**n}<sub>${(n*al)%360}°</sub></b>`};
+});
+add('complejos',2,()=>{
+  const p=R.nz(-5,5),q=R.i(1,6);
+  const b=-2*p, c=p*p+q*q;
+  return {en:`Resuelve en ℂ:&nbsp; ${pol([1,b,c])} = 0 &nbsp;(da la solución con parte imaginaria positiva).`,
+    ca:[{et:'Parte real',tipo:'num',resp:String(p)},{et:'Parte imaginaria',tipo:'num',resp:String(q)}],
+    pi:'Aplica la fórmula general; si Δ < 0 escribe √Δ = i·√|Δ|.',
+    so:`Δ = ${b*b-4*c} < 0 ⟹ x = ${fhx(`${-b} ± ${Math.abs(2*q)}i`,2)} = <b>${cxTxt(p,q)}</b> y su conjugada.`};
+});
+
+/* ───────── TEMA 6 · Geometría analítica ───────── */
+add('geometria',1,()=>{
+  let x1=R.i(-6,6),y1=R.i(-6,6),x2=R.i(-6,6),y2=R.i(-6,6);
+  if(x1===x2)x2=x1+R.i(1,4);
+  const m=(y2-y1)/(x2-x1), n=y1-m*x1;
+  return {en:`Halla la ecuación explícita (y = mx + n) de la recta que pasa por A(${x1}, ${y1}) y B(${x2}, ${y2}).`,
+    ca:[{et:'m =',tipo:'num',resp:`(${y2-y1})/(${x2-x1})`},{et:'n =',tipo:'num',resp:String(rnd(n,10))}],
+    pi:'m = (y₂ − y₁)/(x₂ − x₁), y después sustituye un punto.',
+    so:`m = ${fh(y2-y1,x2-x1)}; sustituyendo A: n = ${y1} ${MIN} (${fh(y2-y1,x2-x1)})·(${x1}) = <b>${rnd(n,4)}</b>`};
+});
+add('geometria',2,()=>{
+  const A=R.nz(-5,5),B=R.nz(-5,5),C=R.i(-8,8),px=R.i(-6,6),py=R.i(-6,6);
+  const d=Math.abs(A*px+B*py+C)/Math.hypot(A,B);
+  return {en:`Calcula la distancia del punto P(${px}, ${py}) a la recta&nbsp; r: ${A}x ${sgn(B)}y ${sgn(C)} = 0`,
+    ca:[{et:'d(P,r) =',tipo:'num',resp:String(rnd(d,10)),tol:1e-4}],
+    pi:'d = |A·p₁ + B·p₂ + C| / √(A² + B²).',
+    so:`d = ${fhx(`|${A}·${px} ${sgn(B*py)} ${sgn(C)}|`,`√(${A*A} + ${B*B})`)} = ${fhx(Math.abs(A*px+B*py+C),rnd(Math.hypot(A,B),4))} = <b>${rnd(d,4)}</b>`};
+});
+add('geometria',2,()=>{
+  const a=R.i(-5,5),b=R.i(-5,5),r=R.i(2,7);
+  const D=-2*a,E=-2*b,F=a*a+b*b-r*r;
+  return {en:`Halla el centro y el radio de la circunferencia&nbsp; x² + y² ${sgn(D)}x ${sgn(E)}y ${sgn(F)} = 0`,
+    ca:[{et:'centro x =',tipo:'num',resp:String(a)},{et:'centro y =',tipo:'num',resp:String(b)},{et:'radio =',tipo:'num',resp:String(r)}],
+    pi:'Centro (−D/2, −E/2) y r = √(D²/4 + E²/4 − F).',
+    so:`Centro (${MIN}${D}/2, ${MIN}${E}/2) = <b>(${a}, ${b})</b>; r = √(${a*a} + ${b*b} ${MIN} ${F}) = <b>${r}</b>`};
+});
+add('geometria',1,()=>{
+  const A=R.nz(-6,6),B=R.nz(-6,6),C=R.i(-9,9);
+  return {en:`Halla la pendiente de una recta <b>perpendicular</b> a&nbsp; r: ${A}x ${sgn(B)}y ${sgn(C)} = 0`,
+    ca:[{et:"m' =",tipo:'num',resp:`${B}/${A}`}],
+    pi:'La pendiente de r es −A/B, y m·m′ = −1.',
+    so:`m<sub>r</sub> = ${fh(-A,B)} ⟹ m′ = ${MIN}1/m<sub>r</sub> = <b>${fh(B,A)}</b>`};
+});
+add('geometria',2,()=>{
+  const par=R.pick([[5,3],[5,4],[13,5],[13,12],[10,6],[10,8],[25,7],[25,24]]);
+  const a=par[0],b=par[1],c=Math.sqrt(a*a-b*b);
+  return {en:`Dada la elipse&nbsp; ${fhx('x²',a*a)} + ${fhx('y²',b*b)} = 1, halla <i>c</i> (semidistancia focal) y la excentricidad.`,
+    ca:[{et:'c =',tipo:'num',resp:String(rnd(c,10)),tol:1e-4},{et:'e =',tipo:'num',resp:`${rnd(c,10)}/${a}`,tol:1e-4}],
+    pi:'En la elipse c² = a² − b² y e = c/a.',
+    so:`c = √(${a*a} ${MIN} ${b*b}) = <b>${rnd(c,4)}</b>; e = c/a = <b>${rnd(c/a,4)}</b>`};
+});
+add('geometria',3,()=>{
+  const m1=R.nz(-3,3),m2=R.nz(-3,3);
+  if(1+m1*m2===0) return {en:`Halla el ángulo que forman&nbsp; r: y = ${m1}x &nbsp;y&nbsp; s: y = ${m2}x`,
+    ca:[{et:'ángulo (°) =',tipo:'num',resp:'90',tol:0.1}],
+    pi:'Si m₁·m₂ = −1 las rectas son perpendiculares.',so:'m₁·m₂ = −1 ⟹ <b>90°</b>'};
+  const ang=Math.atan(Math.abs((m2-m1)/(1+m1*m2)))*180/Math.PI;
+  return {en:`Halla el ángulo (en grados, 2 decimales) que forman&nbsp; r: y = ${pol([m1,0])} &nbsp;y&nbsp; s: y = ${pol([m2,0])}`,
+    ca:[{et:'ángulo (°) =',tipo:'num',resp:String(rnd(ang,8)),tol:0.05}],
+    pi:'tg α = |(m₂ − m₁)/(1 + m₁m₂)|.',
+    so:`tg α = |${fhx(m2-m1,1+m1*m2)}| = ${rnd(Math.abs((m2-m1)/(1+m1*m2)),4)} ⟹ α = <b>${rnd(ang,2)}°</b>`};
+});
+
+/* ───────── TEMA 7 · Funciones ───────── */
+add('funciones',1,()=>{
+  let r1=R.i(-5,4),r2=R.i(-4,5);if(r1>=r2)r2=r1+R.i(1,4);
+  return {en:`Halla los valores que <b>no</b> pertenecen al dominio de&nbsp; f(x) = ${fhx('x + 1',pol([1,-(r1+r2),r1*r2]))}`,
+    ca:[{et:'menor =',tipo:'num',resp:String(r1)},{et:'mayor =',tipo:'num',resp:String(r2)}],
+    pi:'El denominador no puede anularse: resuelve la ecuación de 2.º grado.',
+    so:`x² ${sgn(-(r1+r2))}x ${sgn(r1*r2)} = (x ${r1<0?'+ '+(-r1):MIN+' '+r1})(x ${r2<0?'+ '+(-r2):MIN+' '+r2}) = 0 ⟹ Dom f = ℝ ∖ {<b>${r1}, ${r2}</b>}`};
+});
+add('funciones',2,()=>{
+  const a=R.nz(-4,4),b=R.i(-5,5),c=R.i(-5,5);
+  return {en:`Si f(x) = ${pol([a,b])} y g(x) = x² ${sgn(c)}, halla (g∘f)(x) desarrollada.`,
+    ca:[{et:'(g∘f)(x) =',tipo:'expr',resp:`(${a}*x+(${b}))^2+(${c})`}],
+    pi:'(g∘f)(x) = g(f(x)): sustituye f(x) dentro de g.',
+    so:`g(f(x)) = (${pol([a,b])})² ${sgn(c)} = <b>${pol([a*a,2*a*b,b*b+c])}</b>`};
+});
+add('funciones',2,()=>{
+  const a=R.nz(-5,5),b=R.i(-6,6);
+  return {en:`Halla la función inversa de&nbsp; f(x) = ${pol([a,b])}`,
+    ca:[{et:'f⁻¹(x) =',tipo:'expr',resp:`(x-(${b}))/(${a})`}],
+    pi:'Escribe y = f(x), despeja x y después intercambia los nombres.',
+    so:`y = ${pol([a,b])} ⟹ x = ${fhx(`y ${b<0?'+ '+(-b):MIN+' '+b}`,a)} ⟹ f⁻¹(x) = <b>${fhx(`x ${b<0?'+ '+(-b):MIN+' '+b}`,a)}</b>`};
+});
+add('funciones',1,()=>{
+  const a=R.nz(-3,3),b=R.i(-8,8),c=R.i(-8,8);
+  const xv=-b/(2*a), yv=a*xv*xv+b*xv+c;
+  return {en:`Halla el vértice de la parábola&nbsp; y = ${pol([a,b,c])}`,
+    ca:[{et:'x del vértice',tipo:'num',resp:`(${-b})/(${2*a})`},{et:'y del vértice',tipo:'num',resp:String(rnd(yv,10))}],
+    pi:'x_v = −b/(2a); después sustituye para hallar y_v.',
+    so:`x<sub>v</sub> = ${fh(-b,2*a)} = ${rnd(xv,4)} ⟹ y<sub>v</sub> = <b>${rnd(yv,4)}</b>`};
+});
+add('funciones',2,()=>{
+  let a,b,c,d;
+  do{a=R.nz(-5,5);b=R.i(-6,6);c=R.nz(-4,4);d=R.i(-6,6);}while(a*d-b*c===0);
+  return {en:`Halla las asíntotas de&nbsp; f(x) = ${fhx(pol([a,b]),pol([c,d]))}`,
+    ca:[{et:'A. vertical x =',tipo:'num',resp:`(${-d})/(${c})`},{et:'A. horizontal y =',tipo:'num',resp:`(${a})/(${c})`}],
+    pi:'Vertical: donde se anula el denominador. Horizontal: cociente de los coeficientes principales.',
+    so:`Denominador = 0 ⟹ x = ${fh(-d,c)}. Y lím<sub>x→∞</sub> f(x) = ${fh(a,c)} ⟹ y = <b>${fh(a,c)}</b>`};
+});
+add('funciones',1,()=>{
+  const cs=[['x⁴ '+MIN+' 3x²',0],['x³ + x',1],['x² + x',2],['|x| + 1',0],[MIN+'5x⁵ + 2x',1],['x² + 2x + 1',2],['cos x + x²',0],['x·|x|',1]];
+  const c=R.pick(cs);
+  return {en:`Estudia la simetría de&nbsp; f(x) = ${c[0]}`,
+    ca:[{et:'',tipo:'opciones',ops:['Par (simétrica respecto del eje Y)','Impar (simétrica respecto del origen)','Ni par ni impar'],resp:c[1]}],
+    pi:'Calcula f(−x) y compáralo con f(x) y con −f(x).',
+    so:`Sustituyendo: f(${MIN}x) ${c[1]===0?'= f(x) ⟹ <b>par</b>':c[1]===1?'= '+MIN+'f(x) ⟹ <b>impar</b>':'no coincide ni con f(x) ni con '+MIN+'f(x) ⟹ <b>ninguna</b>'}`};
+});
+
+/* ───────── TEMA 8 · Límites ───────── */
+add('limites',1,()=>{
+  const a=R.nz(-5,5);let b=R.i(-5,5);if(b===a)b=a+2;
+  const L=2*a/(a-b);
+  return {en:`Calcula&nbsp; lím<sub>x→${a}</sub> ${fhx('x² '+MIN+' '+a*a,pol([1,-(a+b),a*b]))}`,
+    ca:[{et:'=',tipo:'num',resp:`(${2*a})/(${a-b})`}],
+    pi:'Es una indeterminación 0/0: factoriza numerador y denominador y simplifica.',
+    so:`${fhx(`(x${MIN}${a})(x+${a})`,`(x${MIN}${a})(x ${b<0?'+ '+(-b):MIN+' '+b})`)} → ${fhx(2*a,a-b)} = <b>${rnd(L,4)}</b>`};
+});
+add('limites',1,()=>{
+  const p=R.nz(-6,6),q=R.nz(-6,6),r=R.i(-5,5),s=R.i(-5,5);
+  return {en:`Calcula&nbsp; lím<sub>x→∞</sub> ${fhx(pol([p,r,1]),pol([q,s,-2]))}`,
+    ca:[{et:'=',tipo:'num',resp:`(${p})/(${q})`}],
+    pi:'Mismo grado arriba y abajo ⟹ el límite es el cociente de los coeficientes principales.',
+    so:`Ambos son de grado 2 ⟹ límite = ${fh(p,q)} = <b>${rnd(p/q,4)}</b>`};
+});
+add('limites',2,()=>{
+  const a=R.i(2,7);
+  return {en:`Calcula&nbsp; lím<sub>x→0</sub> ${fhx(`${sq('x + '+a*a)} ${MIN} ${a}`,'x')}`,
+    ca:[{et:'=',tipo:'num',resp:`1/${2*a}`}],
+    pi:'Indeterminación 0/0 con raíz: multiplica por el conjugado.',
+    so:`${fhx(`(x+${a*a}) ${MIN} ${a*a}`,`x(${sq('x+'+a*a)} + ${a})`)} = ${fhx(1,`${sq('x+'+a*a)}+${a}`)} → <b>${fh(1,2*a)}</b>`};
+});
+add('limites',3,()=>{
+  const p=R.i(1,5);let q=R.i(-4,4);if(q===p)q=p+1;const r=R.i(1,3);
+  const k=r*(p-q);
+  return {en:`Calcula&nbsp; lím<sub>x→∞</sub> ( ${fhx('x + '+p,`x ${q<0?'+ '+(-q):MIN+' '+q}`)} )<sup>${r===1?'':r}x</sup>`,
+    ca:[{et:'=',tipo:'num',resp:`e^(${k})`,tol:1e-4}],
+    pi:'Es 1<sup>∞</sup>: el resultado es e elevado a lím g(x)·(f(x) − 1).',
+    so:`Exponente = lím ${r}x·(${fhx('x+'+p,`x ${q<0?'+ '+(-q):MIN+' '+q}`)} ${MIN} 1) = lím ${fhx(`${r}x·${p-q}`,`x ${q<0?'+ '+(-q):MIN+' '+q}`)} = ${k} ⟹ resultado <b>e<sup>${k}</sup></b> ≈ ${rnd(Math.exp(k),4)}`};
+});
+add('limites',2,()=>{
+  const k=R.i(-3,3),m=R.nz(-4,4),b=R.i(-5,5);
+  const a=m*k+b-k*k;
+  return {en:`Halla el valor de <i>a</i> para que f(x) sea continua en x = ${k}:<br>&nbsp;&nbsp; f(x) = { x² + a &nbsp;si x ≤ ${k} ;&nbsp; ${pol([m,b])} &nbsp;si x &gt; ${k} }`,
+    ca:[{et:'a =',tipo:'num',resp:String(a)}],
+    pi:'Los dos límites laterales deben coincidir en el punto de empalme.',
+    so:`${k*k} + a = ${m*k+b} ⟹ a = <b>${a}</b>`};
+});
+add('limites',3,()=>{
+  const a=R.nz(-4,4),b=R.i(-6,6),c=R.i(-6,6),d=R.nz(-3,3),e=R.i(-5,5);
+  const m=a/d, n=(b*d-a*e)/(d*d);
+  return {en:`Halla la asíntota oblicua (y = mx + n) de&nbsp; f(x) = ${fhx(pol([a,b,c]),pol([d,e]))}`,
+    ca:[{et:'m =',tipo:'num',resp:`(${a})/(${d})`},{et:'n =',tipo:'num',resp:`(${b*d-a*e})/(${d*d})`}],
+    pi:'Divide los polinomios: el cociente es la asíntota oblicua.',
+    so:`Dividiendo: cociente = ${rnd(m,4)}x ${n<0?MIN+' ':'+ '}${Math.abs(rnd(n,4))} ⟹ y = <b>${fh(a,d)}x ${sgn(rnd(n,4))}</b>`};
+});
+
+/* ───────── TEMA 9 · Derivadas ───────── */
+add('derivadas',1,()=>{
+  const a=R.nz(-5,5),b=R.nz(-6,6),c=R.i(-6,6),d=R.i(-9,9);
+  return {en:`Deriva:&nbsp; f(x) = ${pol([a,b,c,d])}`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`${3*a}*x^2+${2*b}*x+(${c})`}],
+    pi:'Regla de la potencia: (xⁿ)′ = n·xⁿ⁻¹.',
+    so:`f′(x) = <b>${pol([3*a,2*b,c])}</b>`};
+});
+add('derivadas',2,()=>{
+  const n=R.i(2,4),a=R.nz(-3,3);
+  return {en:`Deriva:&nbsp; f(x) = x<sup>${n}</sup>·e<sup>${a===1?'':a===-1?MIN:a}x</sup>`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`${n}*x^${n-1}*exp(${a}*x)+x^${n}*${a}*exp(${a}*x)`,dom:[0.4,1.6]}],
+    pi:'Regla del producto: (u·v)′ = u′v + uv′, con (e^{ax})′ = a·e^{ax}.',
+    so:`f′(x) = ${n}x<sup>${n-1}</sup>e<sup>${a}x</sup> + ${a}x<sup>${n}</sup>e<sup>${a}x</sup> = <b>x<sup>${n-1}</sup>e<sup>${a}x</sup>(${n} ${sgn(a)}x)</b>`};
+});
+add('derivadas',2,()=>{
+  const a=R.nz(-4,4),b=R.i(-5,5),c=R.i(1,6);
+  return {en:`Deriva:&nbsp; f(x) = ${fhx(pol([a,b]),'x² + '+c)}`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`(${a}*(x^2+${c})-(${a}*x+(${b}))*2*x)/(x^2+${c})^2`}],
+    pi:'Regla del cociente: (u/v)′ = (u′v − uv′)/v².',
+    so:`f′(x) = ${fhx(`${a}(x²+${c}) ${MIN} (${pol([a,b])})·2x`,`(x²+${c})²`)} = <b>${fhx(pol([-a,-2*b,a*c]),`(x²+${c})²`)}</b>`};
+});
+add('derivadas',2,()=>{
+  const tipo=R.pick(['sin','ln','sqrt','exp']);
+  const a=R.nz(-4,4),b=R.i(1,6),n=R.i(2,3);
+  if(tipo==='sin')  return {en:`Deriva:&nbsp; f(x) = sen<sup>${n}</sup>(${a===1?'':a}x)`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`${n}*(sin(${a}*x))^(${n-1})*cos(${a}*x)*${a}`}],
+    pi:'Cadena doble: primero la potencia, luego el seno, luego el interior.',
+    so:`f′(x) = <b>${n}·sen<sup>${n-1}</sup>(${a}x)·cos(${a}x)·${a}</b>`};
+  if(tipo==='ln')   return {en:`Deriva:&nbsp; f(x) = ln(x² + ${b})`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`2*x/(x^2+${b})`}],
+    pi:'(ln u)′ = u′/u.',so:`f′(x) = <b>${fhx('2x','x² + '+b)}</b>`};
+  if(tipo==='sqrt') return {en:`Deriva:&nbsp; f(x) = ${sq(pol([1,0,b]))}`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`x/sqrt(x^2+${b})`}],
+    pi:'(√u)′ = u′/(2√u).',so:`f′(x) = ${fhx('2x','2'+sq('x²+'+b))} = <b>${fhx('x',sq('x²+'+b))}</b>`};
+  return {en:`Deriva:&nbsp; f(x) = e<sup>${a===1?'':a===-1?MIN:a}x²</sup>`,
+    ca:[{et:"f'(x) =",tipo:'expr',resp:`${2*a}*x*exp(${a}*x^2)`,dom:[0.3,1.4]}],
+    pi:'(e^u)′ = u′·e^u.',so:`f′(x) = <b>${2*a}x·e<sup>${a}x²</sup></b>`};
+});
+add('derivadas',2,()=>{
+  const a=R.nz(-3,3),b=R.i(-5,5),c=R.i(-6,6),x0=R.i(-3,3);
+  const f=x=>a*x*x+b*x+c, m=2*a*x0+b, n=f(x0)-m*x0;
+  return {en:`Halla la recta tangente a&nbsp; f(x) = ${pol([a,b,c])} &nbsp;en el punto de abscisa x = ${x0}. Escríbela como y = mx + n.`,
+    ca:[{et:'m =',tipo:'num',resp:String(m)},{et:'n =',tipo:'num',resp:String(n)}],
+    pi:'m = f′(x₀) y la recta pasa por (x₀, f(x₀)).',
+    so:`f′(x) = ${pol([2*a,b])} ⟹ m = f′(${x0}) = <b>${m}</b>; f(${x0}) = ${f(x0)} ⟹ n = ${f(x0)} ${MIN} (${m})(${x0}) = <b>${n}</b>`};
+});
+add('derivadas',3,()=>{
+  let m=R.i(-4,2),n=R.i(-1,4);
+  if(m>=n)n=m+2;
+  if((m+n)%2!==0)n=n+1;
+  const p=-3*(m+n)/2, q=3*m*n, d=R.i(-4,4);
+  return {en:`Halla las abscisas del máximo y del mínimo relativos de&nbsp; f(x) = ${pol([1,p,q,d])}`,
+    ca:[{et:'x del máximo',tipo:'num',resp:String(m)},{et:'x del mínimo',tipo:'num',resp:String(n)}],
+    pi:'Resuelve f′(x) = 0 y usa el signo de f″(x) = 6x + 2p.',
+    so:`f′(x) = ${pol([3,2*p,q])} = 3(x ${m<0?'+ '+(-m):MIN+' '+m})(x ${n<0?'+ '+(-n):MIN+' '+n}) ⟹ x = ${m}, ${n}. Como f″(x) = ${pol([6,2*p])}: f″(${m}) &lt; 0 ⟹ <b>máximo en x = ${m}</b>; f″(${n}) &gt; 0 ⟹ <b>mínimo en x = ${n}</b>`};
+});
+add('derivadas',3,()=>{
+  const P=4*R.i(4,20);
+  return {en:`Con ${P} m de valla se quiere cerrar un terreno <b>rectangular</b> de área máxima. Halla el lado del rectángulo resultante y su área.`,
+    ca:[{et:'lado (m) =',tipo:'num',resp:String(P/4)},{et:'área (m²) =',tipo:'num',resp:String((P/4)**2)}],
+    pi:'Ligadura 2x + 2y = P. Escribe A(x) = x·(P/2 − x) y deriva.',
+    so:`A(x) = x(${P/2} ${MIN} x); A′(x) = ${P/2} ${MIN} 2x = 0 ⟹ x = <b>${P/4}</b> (cuadrado). A″ = ${MIN}2 &lt; 0 ⟹ máximo. Área = <b>${(P/4)**2} m²</b>`};
+});
+
+/* ───────── TEMA 10 · Integrales ───────── */
+add('integrales',1,()=>{
+  const a=R.nz(-5,5),b=R.nz(-6,6),c=R.i(-8,8);
+  return {en:`Calcula la integral indefinida:&nbsp; ∫ (${pol([a,b,c])}) dx`,
+    ca:[{et:'=',tipo:'anti',resp:`${a}*x^3/3+${b}*x^2/2+(${c})*x`}],
+    pi:'∫xⁿdx = xⁿ⁺¹/(n+1). No hace falta escribir +C.',
+    so:`= <b>${fhx(a,3)}x³ ${b<0?MIN+' ':'+ '}${fhx(Math.abs(b),2)}x² ${sgn(c)}x</b> + C`};
+});
+add('integrales',2,()=>{
+  const k=R.i(1,9);
+  return {en:`Calcula:&nbsp; ∫ ${fhx('2x','x² + '+k)} dx`,
+    ca:[{et:'=',tipo:'anti',resp:`ln(x^2+${k})`,dom:[0.4,2.4]}],
+    pi:'Es del tipo u′/u ⟹ logaritmo neperiano.',
+    so:`= <b>ln(x² + ${k})</b> + C`};
+});
+add('integrales',2,()=>{
+  const k=R.i(1,6),n=R.i(2,4);
+  return {en:`Calcula:&nbsp; ∫ x·(x² + ${k})<sup>${n}</sup> dx`,
+    ca:[{et:'=',tipo:'anti',resp:`(x^2+${k})^${n+1}/(2*${n+1})`,dom:[0.3,1.6]}],
+    pi:'Cambio t = x² + ' + k + ', dt = 2x dx.',
+    so:`= ${fhx(1,2)}·${fhx(`(x²+${k})<sup>${n+1}</sup>`,n+1)} = <b>${fhx(`(x²+${k})<sup>${n+1}</sup>`,2*(n+1))}</b> + C`};
+});
+add('integrales',3,()=>{
+  const a=R.nz(-3,3);
+  const seno=R.sg()>0;
+  if(seno) return {en:`Calcula por partes:&nbsp; ∫ x·e<sup>${a===1?'':a===-1?MIN:a}x</sup> dx`,
+    ca:[{et:'=',tipo:'anti',resp:`exp(${a}*x)*(x/(${a})-1/(${a*a}))`,dom:[0.3,1.5]}],
+    pi:'u = x, dv = e^{ax}dx (regla ALPES).',
+    so:`= ${fhx(`x·e<sup>${a}x</sup>`,a)} ${MIN} ${fhx(`e<sup>${a}x</sup>`,a*a)} = <b>e<sup>${a}x</sup>(${fhx('x',a)} ${MIN} ${fhx(1,a*a)})</b> + C`};
+  return {en:`Calcula por partes:&nbsp; ∫ x·cos(${a===1?'':a===-1?MIN:a}x) dx`,
+    ca:[{et:'=',tipo:'anti',resp:`x*sin(${a}*x)/(${a})+cos(${a}*x)/(${a*a})`,dom:[0.3,1.8]}],
+    pi:'u = x, dv = cos(ax)dx.',
+    so:`= ${fhx(`x·sen(${a}x)`,a)} + ${fhx(`cos(${a}x)`,a*a)} + C`};
+});
+add('integrales',2,()=>{
+  const a=R.i(1,3),b=R.i(-4,4),c=R.i(-5,5),lo=R.i(-2,1),hi=lo+R.i(1,3);
+  const F=x=>a*x**3/3+b*x**2/2+c*x;
+  const v=F(hi)-F(lo);
+  return {en:`Calcula la integral definida:&nbsp; ∫<sub>${lo}</sub><sup>${hi}</sup> (${pol([a,b,c])}) dx`,
+    ca:[{et:'=',tipo:'num',resp:String(rnd(v,10)),tol:1e-6}],
+    pi:'Regla de Barrow: halla una primitiva F y calcula F(b) − F(a).',
+    so:`F(x) = ${fhx(a,3)}x³ ${b<0?MIN+' ':'+ '}${fhx(Math.abs(b),2)}x² ${sgn(c)}x ⟹ F(${hi}) ${MIN} F(${lo}) = <b>${rnd(v,4)}</b>`};
+});
+add('integrales',3,()=>{
+  let r1=R.i(-4,2),r2=R.i(-1,5);if(r1>=r2)r2=r1+R.i(1,3);
+  const A=(r2-r1)**3/6;
+  const m=r1+r2,n=-r1*r2;
+  return {en:`Halla el área del recinto limitado por&nbsp; y = x² &nbsp;y la recta&nbsp; y = ${pol([m,n])}`,
+    ca:[{et:'Área =',tipo:'num',resp:String(rnd(A,10)),tol:1e-4}],
+    pi:'Halla los puntos de corte igualando y después integra (recta − parábola).',
+    so:`Cortes: x = ${r1}, x = ${r2}. A = ∫<sub>${r1}</sub><sup>${r2}</sup>(${pol([m,n])} ${MIN} x²)dx = ${fhx(`(${r2} ${MIN} ${r1})³`,6)} = <b>${rnd(A,4)}</b> u²`};
+});
+
+/* ───────── TEMA 11 · Matrices ───────── */
+add('matrices',1,()=>{
+  const A=[[R.i(-4,4),R.i(-4,4)],[R.i(-4,4),R.i(-4,4)]];
+  const B=[[R.i(-4,4),R.i(-4,4)],[R.i(-4,4),R.i(-4,4)]];
+  const C=[[A[0][0]*B[0][0]+A[0][1]*B[1][0],A[0][0]*B[0][1]+A[0][1]*B[1][1]],
+           [A[1][0]*B[0][0]+A[1][1]*B[1][0],A[1][0]*B[0][1]+A[1][1]*B[1][1]]];
+  return {en:`Calcula el producto A·B siendo&nbsp; A = ${matHTML(A)} &nbsp;y&nbsp; B = ${matHTML(B)}`,
+    ca:[{et:'c₁₁ =',tipo:'num',resp:String(C[0][0])},{et:'c₁₂ =',tipo:'num',resp:String(C[0][1])},
+        {et:'c₂₁ =',tipo:'num',resp:String(C[1][0])},{et:'c₂₂ =',tipo:'num',resp:String(C[1][1])}],
+    pi:'cᵢⱼ = fila i de A por columna j de B.',
+    so:`A·B = ${matHTML(C)}`};
+});
+add('matrices',2,()=>{
+  const M=[[R.i(-3,3),R.i(-3,3),R.i(-3,3)],[R.i(-3,3),R.i(-3,3),R.i(-3,3)],[R.i(-3,3),R.i(-3,3),R.i(-3,3)]];
+  return {en:`Calcula el determinante&nbsp; ${matHTML(M)}`,
+    ca:[{et:'det =',tipo:'num',resp:String(det3(M))}],
+    pi:'Regla de Sarrus: suma de las tres diagonales principales menos las tres secundarias.',
+    so:`Aplicando Sarrus se obtiene <b>${det3(M)}</b>`};
+});
+add('matrices',2,()=>{
+  let A=[[1,0],[0,1]];
+  for(let i=0;i<3;i++){const k=R.nz(-2,2);
+    if(R.sg()>0){A=[[A[0][0]+k*A[1][0],A[0][1]+k*A[1][1]],A[1]];}
+    else{A=[A[0],[A[1][0]+k*A[0][0],A[1][1]+k*A[0][1]]];}}
+  const d=A[0][0]*A[1][1]-A[0][1]*A[1][0];
+  const I=[[A[1][1]/d,-A[0][1]/d],[-A[1][0]/d,A[0][0]/d]];
+  return {en:`Halla la matriz inversa de&nbsp; A = ${matHTML(A)}`,
+    ca:[{et:'a₁₁ =',tipo:'num',resp:String(I[0][0])},{et:'a₁₂ =',tipo:'num',resp:String(I[0][1])},
+        {et:'a₂₁ =',tipo:'num',resp:String(I[1][0])},{et:'a₂₂ =',tipo:'num',resp:String(I[1][1])}],
+    pi:'Para orden 2: A⁻¹ = (1/det)·[[d, −b], [−c, a]].',
+    so:`det A = ${d} ⟹ A⁻¹ = ${matHTML(I)}`};
+});
+add('matrices',2,()=>{
+  const x0=R.i(-4,4),y0=R.i(-4,4);
+  let a,b,c,d;
+  do{a=R.nz(-4,4);b=R.nz(-4,4);c=R.nz(-4,4);d=R.nz(-4,4);}while(a*d-b*c===0);
+  return {en:`Resuelve por la regla de Cramer:&nbsp; ${sys([`${a}x ${sgn(b)}y = ${a*x0+b*y0}`,`${c}x ${sgn(d)}y = ${c*x0+d*y0}`])}`,
+    ca:[{et:'x =',tipo:'num',resp:String(x0)},{et:'y =',tipo:'num',resp:String(y0)}],
+    pi:'x = det(A₁)/det(A), sustituyendo la columna correspondiente por los términos independientes.',
+    so:`det A = ${a*d-b*c}; x = <b>${x0}</b>, y = <b>${y0}</b>`};
+});
+add('matrices',3,()=>{
+  const caso=R.i(0,2), n=3;
+  const rA=[3,2,2][caso], rAmp=[3,2,3][caso];
+  const ops=['Compatible determinado (S.C.D.)','Compatible indeterminado (S.C.I.)','Incompatible (S.I.)'];
+  const resp=caso===0?0:caso===1?1:2;
+  return {en:`Un sistema de 3 ecuaciones con 3 incógnitas cumple&nbsp; rg(A) = ${rA} &nbsp;y&nbsp; rg(A*) = ${rAmp}. Clasifícalo.`,
+    ca:[{et:'',tipo:'opciones',ops,resp}],
+    pi:'Rouché–Frobenius: compara rg(A), rg(A*) y el número de incógnitas n = 3.',
+    so:`${rA===rAmp?`rg(A) = rg(A*) = ${rA}`:'rg(A) ≠ rg(A*)'} ${rA!==rAmp?'⟹ <b>incompatible</b>':rA===n?'= n ⟹ <b>S.C.D.</b>':`&lt; n = 3 ⟹ <b>S.C.I.</b> con ${n-rA} parámetro(s)`}`};
+});
+add('matrices',3,()=>{
+  const d=R.nz(-5,5),k=R.i(2,4);
+  return {en:`Sea A una matriz cuadrada de orden 3 con det(A) = ${d}. Calcula det(${k}A) y det(A⁻¹).`,
+    ca:[{et:`det(${k}A) =`,tipo:'num',resp:String(k**3*d)},{et:'det(A⁻¹) =',tipo:'num',resp:`1/(${d})`}],
+    pi:'det(kA) = kⁿ·det(A) con n el orden; det(A⁻¹) = 1/det(A).',
+    so:`det(${k}A) = ${k}³·${d} = <b>${k**3*d}</b>; det(A⁻¹) = <b>${fh(1,d)}</b>`};
+});
+
+/* ───────── TEMA 12 · Probabilidad y estadística ───────── */
+add('probabilidad',1,()=>{
+  const tipo=R.i(0,2);
+  if(tipo===0){const m=R.i(5,9),n=R.i(2,4);
+    return {en:`¿Cuántos números de ${n} cifras <b>distintas</b> se pueden formar con las ${m} cifras {1, 2, …, ${m}}?`,
+      ca:[{et:'=',tipo:'num',resp:String(fact(m)/fact(m-n))}],
+      pi:'Importa el orden y no se repiten ⟹ variaciones.',
+      so:`V<sub>${m},${n}</sub> = ${fact(m)/fact(m-n)}`};}
+  if(tipo===1){const m=R.i(8,20),n=R.i(2,4);
+    return {en:`¿De cuántas formas se pueden elegir ${n} representantes entre ${m} alumnos?`,
+      ca:[{et:'=',tipo:'num',resp:String(comb(m,n))}],
+      pi:'No importa el orden ⟹ combinaciones.',
+      so:`C<sub>${m},${n}</sub> = (${m} sobre ${n}) = <b>${comb(m,n)}</b>`};}
+  const m=R.i(2,4),n=R.i(3,6);
+  return {en:`¿Cuántas palabras (con o sin sentido) de ${n} letras se pueden formar con un alfabeto de ${m} letras, pudiendo repetirlas?`,
+    ca:[{et:'=',tipo:'num',resp:String(m**n)}],
+    pi:'Importa el orden y sí se repiten ⟹ variaciones con repetición.',
+    so:`VR<sub>${m},${n}</sub> = ${m}<sup>${n}</sup> = <b>${m**n}</b>`};
+});
+add('probabilidad',1,()=>{
+  const s=R.i(4,10);
+  let f=0;for(let i=1;i<=6;i++)for(let j=1;j<=6;j++)if(i+j===s)f++;
+  return {en:`Se lanzan dos dados. Calcula la probabilidad de que la suma sea exactamente ${s}.`,
+    ca:[{et:'P =',tipo:'num',resp:`${f}/36`,tol:1e-5}],
+    pi:'Casos posibles: 36. Cuenta los favorables ordenadamente.',
+    so:`Casos favorables: ${f} ⟹ P = ${fh(f,36)} ≈ <b>${rnd(f/36,4)}</b>`};
+});
+add('probabilidad',2,()=>{
+  const pa=R.i(20,60)/100, pb=R.i(20,60)/100;
+  const pi_=rnd(R.i(5,Math.round(Math.min(pa,pb)*100))/100,2);
+  return {en:`Sean A y B con P(A) = ${pa}, P(B) = ${pb} y P(A∩B) = ${pi_}. Calcula P(A∪B) y P(A/B).`,
+    ca:[{et:'P(A∪B) =',tipo:'num',resp:String(rnd(pa+pb-pi_,6)),tol:1e-4},
+        {et:'P(A/B) =',tipo:'num',resp:String(rnd(pi_/pb,8)),tol:1e-4}],
+    pi:'P(A∪B) = P(A) + P(B) − P(A∩B) y P(A/B) = P(A∩B)/P(B).',
+    so:`P(A∪B) = ${pa} + ${pb} ${MIN} ${pi_} = <b>${rnd(pa+pb-pi_,4)}</b>; P(A/B) = ${fhx(pi_,pb)} = <b>${rnd(pi_/pb,4)}</b>`};
+});
+add('probabilidad',3,()=>{
+  const p1=R.i(30,70)/100, p2=rnd(1-p1,2);
+  const q1=R.i(2,10)/100, q2=R.i(2,10)/100;
+  const pd=p1*q1+p2*q2;
+  return {en:`Dos máquinas fabrican el ${p1*100} % y el ${rnd(p2*100,0)} % de las piezas. Son defectuosas el ${q1*100} % y el ${q2*100} % respectivamente. Halla P(defectuosa) y, si una pieza es defectuosa, la probabilidad de que la haya hecho la <b>primera</b> máquina.`,
+    ca:[{et:'P(D) =',tipo:'num',resp:String(rnd(pd,10)),tol:1e-4},
+        {et:'P(M₁/D) =',tipo:'num',resp:String(rnd(p1*q1/pd,10)),tol:1e-4}],
+    pi:'Probabilidad total para P(D); Bayes para la segunda: rama de M₁ dividida entre P(D).',
+    so:`P(D) = ${p1}·${q1} + ${p2}·${q2} = <b>${rnd(pd,5)}</b>; P(M₁/D) = ${fhx(rnd(p1*q1,5),rnd(pd,5))} = <b>${rnd(p1*q1/pd,4)}</b>`};
+});
+add('probabilidad',2,()=>{
+  const n=R.i(5,12),p=R.i(2,8)/10,k=R.i(1,Math.min(n-1,5));
+  const P=comb(n,k)*p**k*(1-p)**(n-k);
+  return {en:`Sea X ~ B(${n}; ${p}). Calcula P(X = ${k}) (4 decimales) y la media μ.`,
+    ca:[{et:`P(X = ${k}) =`,tipo:'num',resp:String(rnd(P,10)),tol:5e-4},
+        {et:'μ =',tipo:'num',resp:String(rnd(n*p,10)),tol:1e-4}],
+    pi:'P(X = k) = C(n,k)·pᵏ·(1−p)ⁿ⁻ᵏ y μ = n·p.',
+    so:`P = C(${n},${k})·${p}<sup>${k}</sup>·${rnd(1-p,2)}<sup>${n-k}</sup> = <b>${rnd(P,4)}</b>; μ = ${n}·${p} = <b>${rnd(n*p,2)}</b>`};
+});
+add('probabilidad',2,()=>{
+  const mu=R.i(50,180),sg=R.i(4,20),x=mu+R.sg()*R.i(1,3)*sg/2;
+  const z=(x-mu)/sg;
+  return {en:`Una variable sigue una N(${mu}, ${sg}). Tipifica el valor x = ${rnd(x,2)} (2 decimales) y di qué desviaciones típicas dista de la media.`,
+    ca:[{et:'z =',tipo:'num',resp:String(rnd(z,8)),tol:0.005}],
+    pi:'z = (x − μ)/σ.',
+    so:`z = ${fhx(`${rnd(x,2)} ${MIN} ${mu}`,sg)} = <b>${rnd(z,2)}</b>`};
+});
+add('probabilidad',3,()=>{
+  const xs=[1,2,3,4,5];
+  const ys=xs.map(x=>R.i(1,9));
+  const n=5, mx=3, my=ys.reduce((a,b)=>a+b)/n;
+  const sxy=xs.reduce((a,x,i)=>a+x*ys[i],0)/n-mx*my;
+  const vx=xs.reduce((a,x)=>a+x*x,0)/n-mx*mx;
+  const m=sxy/vx, b=my-m*mx;
+  return {en:`Dada la distribución bidimensional&nbsp; x: ${xs.join(', ')} &nbsp;/&nbsp; y: ${ys.join(', ')},<br>halla la recta de regresión de y sobre x (y = mx + b).`,
+    ca:[{et:'m =',tipo:'num',resp:String(rnd(m,10)),tol:1e-3},{et:'b =',tipo:'num',resp:String(rnd(b,10)),tol:1e-3}],
+    pi:'m = σ_xy/σ²_x y la recta pasa por el centro de gravedad (x̄, ȳ).',
+    so:`x̄ = ${mx}, ȳ = ${rnd(my,3)}, σ<sub>xy</sub> = ${rnd(sxy,4)}, σ²<sub>x</sub> = ${vx} ⟹ m = <b>${rnd(m,4)}</b>, b = <b>${rnd(b,4)}</b>`};
+});
+
+/* ══════════════════════════ 4. MOTOR ══════════════════════════ */
+const S={sel:new Set(TEMAS.map(t=>t.id)),ex:null,ok:0,tot:0,racha:0,mejor:0,pts:0,
+  modo:'practica',examen:[],eIdx:0,resuelto:false,opSel:null};
+const $=id=>document.getElementById(id);
+const HIST=JSON.parse(localStorage.getItem('mates-bach')||'{}');
+const guarda=()=>localStorage.setItem('mates-bach',JSON.stringify(HIST));
+
+function pintaChips(){
+  $('chips').innerHTML=TEMAS.map(t=>
+    `<span class="chip${S.sel.has(t.id)?' on':''}" data-id="${t.id}">${t.n}. ${t.nom}</span>`).join('');
+  [...$('chips').children].forEach(c=>c.onclick=()=>{
+    const id=c.dataset.id;
+    S.sel.has(id)?S.sel.delete(id):S.sel.add(id);
+    pintaChips();});
+  $('cuenta').textContent=`${S.sel.size} tema(s) seleccionado(s)`;
+}
+function nuevoEjercicio(){
+  if(S.sel.size===0){alert('Selecciona al menos un tema.');return null;}
+  const nivel=+$('nivel').value;
+  const ids=[...S.sel];
+  for(let intento=0;intento<60;intento++){
+    const id=R.pick(ids);
+    const cands=GEN[id].filter(g=>g.nivel<=nivel);
+    if(!cands.length)continue;
+    try{
+      const e=R.pick(cands).f();
+      if(e&&e.ca&&e.ca.length){e.tema=id;return e;}
+    }catch(err){}
+  }
+  return null;
+}
+function render(e){
+  S.ex=e;S.resuelto=false;S.opSel=null;
+  const t=TEMAS.find(t=>t.id===e.tema);
+  $('tagTema').textContent=`${t.n}. ${t.nom}`;
+  $('enun').innerHTML=e.en;
+  $('fb').className='';$('fb').textContent='';
+  $('panel').style.display='none';$('panel').innerHTML='';
+  $('campos').innerHTML=e.ca.map((c,i)=>{
+    if(c.tipo==='opciones')
+      return `<div class="ops" data-i="${i}">${c.ops.map((o,j)=>`<div class="op" data-j="${j}">${o}</div>`).join('')}</div>`;
+    return `<div class="campo"><label>${c.et}</label><input id="in${i}" autocomplete="off" spellcheck="false" placeholder="${c.ph||'tu respuesta'}"></div>`;
+  }).join('');
+  [...document.querySelectorAll('.op')].forEach(o=>o.onclick=()=>{
+    if(S.resuelto)return;
+    [...o.parentNode.children].forEach(x=>x.classList.remove('sel'));
+    o.classList.add('sel');S.opSel=+o.dataset.j;});
+  const f=$('in0'); if(f)f.focus();
+  $('bComprobar').disabled=false;
+  $('bPista').disabled = S.modo==='examen';
+  $('bSol').disabled = S.modo==='examen';
+  if(S.modo==='examen') $('progExam').textContent=`Pregunta ${S.eIdx+1} de ${S.examen.length}`;
+  else $('progExam').textContent='';
+}
+function checkCampo(c,val){
+  if(c.tipo==='opciones') return S.opSel===c.resp;
+  if(val==null||val.trim()==='')return false;
+  let v=val.trim();
+  if(c.tipo==='num'){
+    const a=evalNum(v), b=evalNum(c.resp);
+    if(isNaN(a)||isNaN(b))return false;
+    const tol=c.tol!=null?c.tol:1e-6*(1+Math.abs(b));
+    return Math.abs(a-b)<=tol;
+  }
+  if(c.tipo==='expr') return sameFn(v,c.resp,c.dom,false);
+  if(c.tipo==='anti'){
+    v=v.replace(/\+\s*c\s*$/i,'').replace(/\+\s*k\s*$/i,'');
+    return sameFn(v,c.resp,c.dom,true);
+  }
+  if(c.tipo==='texto') return (c.acepta||[]).some(a=>norm(a)===norm(v));
+  return false;
+}
+function comprobar(){
+  if(!S.ex||S.resuelto)return;
+  let todo=true;
+  S.ex.ca.forEach((c,i)=>{
+    let ok;
+    if(c.tipo==='opciones'){
+      ok=checkCampo(c,null);
+      const cont=document.querySelector('.ops');
+      if(cont){[...cont.children].forEach((o,j)=>{
+        if(j===c.resp)o.classList.add('ok');
+        else if(j===S.opSel)o.classList.add('bad');});}
+    }else{
+      const inp=$('in'+i);
+      ok=checkCampo(c,inp.value);
+      inp.classList.add(ok?'ok':'bad');
+    }
+    if(!ok)todo=false;
+  });
+  S.resuelto=true;S.tot++;
+  if(todo){
+    S.ok++;S.racha++;S.mejor=Math.max(S.mejor,S.racha);
+    S.pts+=10+Math.min(S.racha,10)*2;
+    $('fb').className='ok';
+    $('fb').innerHTML='✅ <b>¡Correcto!</b>'+(S.racha>2?` Llevas ${S.racha} seguidos.`:'');
+  }else{
+    S.racha=0;
+    $('fb').className='bad';
+    const sols=S.ex.ca.map(c=>c.tipo==='opciones'?c.ops[c.resp]:`${c.et} ${muestraResp(c)}`).join(' &nbsp;·&nbsp; ');
+    $('fb').innerHTML=`❌ No es correcto. Respuesta: <b>${sols}</b>`;
+  }
+  const h=HIST[S.ex.tema]||(HIST[S.ex.tema]={ok:0,tot:0});
+  h.tot++; if(todo)h.ok++;
+  guarda();actualiza();
+  if(S.modo==='examen'){
+    S.examen[S.eIdx].acertado=todo;
+    S.examen[S.eIdx].ex=S.ex;
+  }
+  $('bComprobar').disabled=true;
+}
+function muestraResp(c){
+  if(c.tipo==='num'){const v=evalNum(c.resp);
+    return (Math.abs(v-Math.round(v))<1e-9)?String(Math.round(v)).replace('-',MIN):`${c.resp} ≈ ${rnd(v,4)}`;}
+  return c.resp;
+}
+function siguiente(){
+  if(S.modo==='examen'){
+    if(!S.resuelto)comprobar();
+    S.eIdx++;
+    if(S.eIdx>=S.examen.length){finExamen();return;}
+    render(S.examen[S.eIdx].ex);
+    return;
+  }
+  const e=nuevoEjercicio(); if(e)render(e);
+}
+function actualiza(){
+  $('sOk').textContent=`${S.ok} / ${S.tot}`;
+  $('sRacha').textContent=S.racha;
+  $('sMejor').textContent=S.mejor;
+  $('sPts').textContent=S.pts;
+  $('barra').style.width=(S.tot?100*S.ok/S.tot:0)+'%';
+  $('tabla').innerHTML=TEMAS.map(t=>{
+    const h=HIST[t.id];
+    if(!h||!h.tot)return '';
+    return `<tr><td>${t.n}. ${t.nom}</td><td>${h.ok}/${h.tot} · ${Math.round(100*h.ok/h.tot)}%</td></tr>`;
+  }).join('')||'<tr><td class="mini">Todavía no hay datos.</td></tr>';
+}
+function iniciaExamen(){
+  S.examen=[];
+  for(let i=0;i<10;i++){const e=nuevoEjercicio();if(e)S.examen.push({ex:e,acertado:null});}
+  if(!S.examen.length)return;
+  S.eIdx=0;S.ok=0;S.tot=0;S.racha=0;S.pts=0;
+  $('cExamFin').classList.add('hidden');
+  $('cEj').classList.remove('hidden');
+  render(S.examen[0].ex);actualiza();
+}
+function finExamen(){
+  const ac=S.examen.filter(e=>e.acertado).length;
+  const nota=rnd(10*ac/S.examen.length,1);
+  $('cEj').classList.add('hidden');
+  $('cExamFin').classList.remove('hidden');
+  $('examfin').innerHTML=
+    `<div style="font-size:34px;font-weight:700;color:${nota>=5?'var(--ok)':'var(--bad)'}">${nota} / 10</div>
+     <div class="mini" style="margin-bottom:10px">${ac} aciertos de ${S.examen.length}</div>
+     <ol>${S.examen.map(e=>`<li>${e.acertado?'✅':'❌'} <span class="mini">${TEMAS.find(t=>t.id===e.ex.tema).nom}</span> — ${e.ex.en}</li>`).join('')}</ol>`;
+}
+
+/* ── eventos ── */
+$('bComprobar').onclick=comprobar;
+$('bSig').onclick=siguiente;
+$('bPista').onclick=()=>{if(!S.ex)return;const p=$('panel');
+  p.style.display='block';p.innerHTML=`<b>Pista:</b> ${S.ex.pi||'—'}`;};
+$('bSol').onclick=()=>{if(!S.ex)return;const p=$('panel');
+  p.style.display='block';p.innerHTML=`<b>Solución:</b><br>${S.ex.so||'—'}`;
+  if(!S.resuelto){S.resuelto=true;S.tot++;S.racha=0;$('bComprobar').disabled=true;
+    const h=HIST[S.ex.tema]||(HIST[S.ex.tema]={ok:0,tot:0});h.tot++;guarda();actualiza();}};
+$('bTodos').onclick=()=>{TEMAS.forEach(t=>S.sel.add(t.id));pintaChips();};
+$('bNinguno').onclick=()=>{S.sel.clear();pintaChips();};
+$('bReset').onclick=()=>{if(confirm('¿Borrar todo el histórico guardado?')){
+  Object.keys(HIST).forEach(k=>delete HIST[k]);guarda();actualiza();}};
+$('bReintentar').onclick=iniciaExamen;
+$('bModo').onclick=()=>{
+  if(S.modo==='practica'){S.modo='examen';$('bModo').textContent='Modo práctica';
+    $('bModo').classList.remove('sec');iniciaExamen();}
+  else{S.modo='practica';$('bModo').textContent='Modo examen';$('bModo').classList.add('sec');
+    $('cExamFin').classList.add('hidden');$('cEj').classList.remove('hidden');
+    S.ok=0;S.tot=0;S.racha=0;S.pts=0;actualiza();siguiente();}
+};
+document.addEventListener('keydown',ev=>{
+  if(ev.key==='Enter'){ev.preventDefault(); S.resuelto?siguiente():comprobar();}
+});
+
+pintaChips();actualiza();siguiente();
+</script>
+</body>
+</html>

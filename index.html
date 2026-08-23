@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Clases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f7f4;
+    --ink:#16181d;
+    --ink-soft:#4a4e58;
+    --line:#d8d9d4;
+    --math:#5b4bd6;
+    --math-soft:#eeecfb;
+    --tech:#0d8a7a;
+    --tech-soft:#e6f5f2;
+    --accent-warn:#c65b2e;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0/100% 42px,
+      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/42px 100%,
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  header{
+    padding:28px 20px 18px;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .brand .mark{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.08em;
+    background:var(--ink);
+    color:var(--paper);
+    padding:4px 8px;
+    border-radius:5px;
+  }
+  .brand h1{
+    font-size:22px;
+    margin:0;
+    font-weight:800;
+    letter-spacing:-0.01em;
+  }
+  header p.sub{
+    margin:10px 0 0;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:55ch;
+  }
+
+  main{max-width:920px;margin:0 auto;padding:10px 20px 80px;}
+
+  .subjects{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:22px 0 30px;
+  }
+  @media (max-width:640px){ .subjects{grid-template-columns:1fr;} }
+
+  .subject-card{
+    text-align:left;
+    border:1.5px solid var(--line);
+    background:#fff;
+    border-radius:var(--radius);
+    padding:18px 18px 16px;
+    cursor:pointer;
+    font-family:inherit;
+    position:relative;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .subject-card:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(20,20,30,.08);}
+  .subject-card:focus-visible{outline:3px solid var(--ink); outline-offset:2px;}
+  .subject-card.math{border-top:4px solid var(--math);}
+  .subject-card.tech{border-top:4px solid var(--tech);}
+  .subject-card .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .subject-card h2{margin:4px 0 6px;font-size:19px;font-weight:800;}
+  .subject-card p{margin:0;color:var(--ink-soft);font-size:13.5px;line-height:1.45;}
+  .subject-card .go{
+    position:absolute; top:16px; right:16px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; color:var(--ink-soft);
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .panel-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:14px; flex-wrap:wrap; gap:10px;
+  }
+  .panel-head h2{font-size:20px; margin:0; font-weight:800;}
+  .back-btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px; background:none; border:1.5px solid var(--line);
+    border-radius:8px; padding:7px 12px; cursor:pointer; color:var(--ink);
+  }
+  .back-btn:hover{background:#fff;}
+
+  .topic{
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    background:#fff;
+    margin-bottom:12px;
+    overflow:hidden;
+  }
+  .topic-toggle{
+    width:100%; text-align:left; background:none; border:none;
+    padding:14px 16px; cursor:pointer; display:flex; align-items:center;
+    justify-content:space-between; font-family:inherit; font-size:15.5px;
+    font-weight:600; color:var(--ink);
+  }
+  .topic-toggle .chevron{
+    font-family:'IBM Plex Mono',monospace; color:var(--ink-soft);
+    transition:transform .2s ease; font-size:13px;
+  }
+  .topic.open .chevron{transform:rotate(90deg);}
+  .topic-body{display:none; padding:0 16px 16px;}
+  .topic.open .topic-body{display:block;}
+
+  .tabs{display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;}
+  .tab-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:12px;
+    border:1.5px solid var(--line); background:var(--paper);
+    padding:6px 11px; border-radius:7px; cursor:pointer; color:var(--ink-soft);
+  }
+  .tab-btn.active.math-active{background:var(--math); border-color:var(--math); color:#fff;}
+  .tab-btn.active.tech-active{background:var(--tech); border-color:var(--tech); color:#fff;}
+
+  .tab-content{display:none; font-size:14px; color:var(--ink-soft); line-height:1.6;}
+  .tab-content.active{display:block;}
+  .tab-content ul{margin:0; padding-left:18px;}
+  .tab-content li{margin-bottom:6px;}
+  .unit-meta{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.05em;
+    color:var(--ink-soft); margin:-4px 0 12px;
+  }
+  .practice-link{
+    display:inline-block; font-weight:600; text-decoration:none;
+    border:1.5px solid var(--line); border-radius:8px; padding:8px 14px; font-size:13.5px;
+  }
+  #panel-math .practice-link{color:var(--math); border-color:var(--math);}
+  #panel-tech .practice-link{color:var(--tech); border-color:var(--tech);}
+  .practice-link:hover{background:#fff;}
+  .tech-soon{
+    border:1.5px dashed var(--line); border-radius:var(--radius); background:#fff;
+    padding:22px 20px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;
+  }
+
+  footer{
+    max-width:920px; margin:0 auto; padding:20px; color:var(--ink-soft);
+    font-size:12.5px; font-family:'IBM Plex Mono',monospace; border-top:1.5px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="mark">PORTAL</span>
+    <h1>Materiales de clase</h1>
+  </div>
+  <p class="sub">Apuntes, práctica interactiva y exámenes de Matemáticas y Tecnología. Elige tu materia para empezar.</p>
+</header>
+
+<main>
+
+  <!-- HOME -->
+  <div id="home">
+    <div class="subjects">
+      <button class="subject-card math" onclick="showPanel('math')">
+        <span class="eyebrow">Bachillerato</span>
+        <h2>Matemáticas</h2>
+        <p>12 unidades: de números reales a probabilidad y estadística, con práctica interactiva.</p>
+        <span class="go">→</span>
+      </button>
+      <button class="subject-card tech" onclick="showPanel('tech')">
+        <span class="eyebrow">Secundaria · Bachillerato</span>
+        <h2>Tecnología</h2>
+        <p>Informática, robótica y proyectos prácticos. (Próximamente)</p>
+        <span class="go">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MATEMÁTICAS -->
+  <section class="panel" id="panel-math">
+    <div class="panel-head">
+      <h2>Matemáticas · Bachillerato</h2>
+      <button class="back-btn" onclick="showHome()">← Volver</button>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 1 — Números reales, potencias, radicales y logaritmos</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 8 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m1-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m1-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m1-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m1-material">
+          <ul>
+            <li>Clasificar números en ℕ, ℤ, ℚ, ℐ, ℝ y operar con intervalos</li>
+            <li>Manejar el valor absoluto y resolver ecuaciones e inecuaciones con él</li>
+            <li>Operar con potencias de exponente entero y fraccionario, y con radicales</li>
+            <li>Racionalizar denominadores</li>
+            <li>Definir el logaritmo y aplicar sus propiedades</li>
+            <li>Aproximar, acotar el error y usar notación científica</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m1-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m1-examenes">
+          <ul><li>Próximamente</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 2 — Polinomios y fracciones algebraicas</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 7 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m2-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m2-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m2-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m2-material">
+          <ul>
+            <li>Operar con polinomios y dividir por Ruffini</li>
+            <li>Aplicar los teoremas del resto y del factor</li>
+            <li>Factorizar polinomios buscando raíces racionales</li>
+            <li>Simplificar y operar fracciones algebraicas</li>
+            <li>Desarrollar potencias con el binomio de Newton</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m2-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m2-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 3 — Ecuaciones, inecuaciones y sistemas</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 9 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m3-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m3-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m3-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m3-material">
+          <ul>
+            <li>Resolver ecuaciones de 2.º grado, bicuadradas, racionales e irracionales</li>
+            <li>Resolver ecuaciones exponenciales y logarítmicas</li>
+            <li>Resolver inecuaciones polinómicas y racionales, y sistemas de inecuaciones</li>
+            <li>Resolver sistemas lineales (Gauss) y no lineales</li>
+            <li>Plantear y resolver problemas mediante ecuaciones</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m3-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m3-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 4 — Trigonometría</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Geometría · Matemáticas I · 10 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m4-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m4-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m4-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m4-material">
+          <ul>
+            <li>Convertir grados ↔ radianes y usar la circunferencia goniométrica</li>
+            <li>Conocer las razones de los ángulos notables y reducir al primer cuadrante</li>
+            <li>Demostrar y aplicar identidades trigonométricas</li>
+            <li>Usar las fórmulas de suma, diferencia, ángulo doble y ángulo mitad</li>
+            <li>Resolver ecuaciones trigonométricas</li>
+            <li>Resolver triángulos cualesquiera con los teoremas del seno y del coseno</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m4-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m4-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 5 — Números complejos</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Aritmética y Álgebra · Matemáticas I · 6 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m5-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m5-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m5-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m5-material">
+          <ul>
+            <li>Operar en forma binómica y representar en el plano complejo</li>
+            <li>Pasar entre formas binómica, polar y trigonométrica</li>
+            <li>Multiplicar, dividir y potenciar en forma polar (De Moivre)</li>
+            <li>Calcular las n raíces n-ésimas de un complejo</li>
+            <li>Resolver ecuaciones con soluciones complejas</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m5-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m5-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 6 — Geometría analítica: vectores, rectas y cónicas</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Geometría · Matemáticas I (plano) y II (espacio) · 12 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m6-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m6-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m6-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m6-material">
+          <ul>
+            <li>Operar con vectores en el plano y usar el producto escalar</li>
+            <li>Escribir la recta en todas sus formas y estudiar posiciones relativas</li>
+            <li>Calcular ángulos y distancias</li>
+            <li>Identificar y escribir las ecuaciones de las cónicas</li>
+            <li>(Mates II) Vectores, rectas y planos en el espacio: productos vectorial y mixto</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m6-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m6-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 7 — Funciones elementales</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Análisis · Matemáticas I · 8 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m7-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m7-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m7-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m7-material">
+          <ul>
+            <li>Calcular dominio y recorrido de las funciones elementales</li>
+            <li>Operar y componer funciones; hallar la función inversa</li>
+            <li>Reconocer simetrías, periodicidad, monotonía y acotación</li>
+            <li>Representar funciones a partir de transformaciones elementales</li>
+            <li>Identificar y usar la función exponencial, logarítmica y las trigonométricas</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m7-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m7-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 8 — Límites y continuidad</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Análisis · Matemáticas I–II · 9 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m8-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m8-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m8-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m8-material">
+          <ul>
+            <li>Calcular límites laterales e infinitos</li>
+            <li>Resolver las indeterminaciones 0/0, ∞/∞, ∞−∞, 0·∞ y 1<sup>∞</sup></li>
+            <li>Hallar las asíntotas de una función</li>
+            <li>Estudiar la continuidad y clasificar las discontinuidades</li>
+            <li>Aplicar el teorema de Bolzano</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m8-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m8-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 9 — Derivadas y aplicaciones</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Análisis · Matemáticas I–II · 12 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m9-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m9-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m9-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m9-material">
+          <ul>
+            <li>Interpretar la derivada como tasa de variación y pendiente de la tangente</li>
+            <li>Derivar con soltura usando todas las reglas, incluida la regla de la cadena</li>
+            <li>Estudiar monotonía, extremos, curvatura y puntos de inflexión</li>
+            <li>Resolver problemas de optimización</li>
+            <li>Aplicar L'Hôpital y los teoremas de Rolle y del valor medio</li>
+            <li>Representar gráficamente funciones</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m9-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m9-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 10 — Integrales</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Análisis · Matemáticas II · 11 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m10-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m10-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m10-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m10-material">
+          <ul>
+            <li>Calcular primitivas inmediatas y casi inmediatas</li>
+            <li>Integrar por cambio de variable y por partes</li>
+            <li>Integrar funciones racionales</li>
+            <li>Aplicar la regla de Barrow</li>
+            <li>Calcular áreas de recintos planos y volúmenes de revolución</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m10-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m10-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 11 — Matrices, determinantes y sistemas</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Álgebra lineal · Matemáticas II · 11 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m11-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m11-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m11-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m11-material">
+          <ul>
+            <li>Operar con matrices y calcular potencias</li>
+            <li>Calcular determinantes de orden 2, 3 y superior, y usar sus propiedades</li>
+            <li>Hallar el rango y la matriz inversa</li>
+            <li>Resolver ecuaciones matriciales</li>
+            <li>Discutir y resolver sistemas con Gauss, Rouché–Frobenius y Cramer</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m11-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m11-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+
+    <div class="topic">
+      <button class="topic-toggle" onclick="toggleTopic(this)">
+        <span>Unidad 12 — Combinatoria, probabilidad y estadística</span><span class="chevron">›</span>
+      </button>
+      <div class="topic-body">
+        <p class="unit-meta">Estadística y Probabilidad · Matemáticas I–II · 12 sesiones</p>
+        <div class="tabs">
+          <button class="tab-btn active math-active" onclick="showTab(this,'m12-material')">Material</button>
+          <button class="tab-btn" onclick="showTab(this,'m12-ejercicios')">Ejercicios</button>
+          <button class="tab-btn" onclick="showTab(this,'m12-examenes')">Exámenes</button>
+        </div>
+        <div class="tab-content active" id="m12-material">
+          <ul>
+            <li>Contar con variaciones, permutaciones y combinaciones</li>
+            <li>Calcular probabilidades con la regla de Laplace y las propiedades de la probabilidad</li>
+            <li>Aplicar probabilidad condicionada, independencia, probabilidad total y Bayes</li>
+            <li>Manejar la distribución binomial y la normal (y la aproximación entre ambas)</li>
+            <li>Analizar distribuciones bidimensionales: correlación y regresión</li>
+          </ul>
+        </div>
+        <div class="tab-content" id="m12-ejercicios">
+          <p>Ejercicios generados automáticamente con corrección al instante.</p>
+          <p><a class="practice-link" href="app/index.html" target="_blank" rel="noopener">Abrir práctica interactiva →</a></p>
+        </div>
+        <div class="tab-content" id="m12-examenes"><ul><li>Próximamente</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECNOLOGÍA -->
+  <section class="panel" id="panel-tech">
+    <div class="panel-head">
+      <h2>Tecnología · Secundaria y Bachillerato</h2>
+      <button class="back-btn" onclick="showHome()">← Volver</button>
+    </div>
+
+    <div class="tech-soon">
+      Todavía estamos preparando el temario de Tecnología (Informática, Robótica y proyectos prácticos).
+      Vuelve pronto — mientras tanto puedes consultar la sección de Matemáticas.
+    </div>
+  </section>
+
+</main>
+
+<footer>Portal de clases — Matemáticas y Tecnología</footer>
+
+<script>
+function showPanel(name){
+  document.getElementById('home').style.display='none';
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showHome(){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('home').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleTopic(btn){
+  btn.parentElement.classList.toggle('open');
+}
+function showTab(btn, id){
+  const group = btn.closest('.topic-body');
+  group.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active','math-active','tech-active'));
+  group.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const isTech = group.closest('#panel-tech') !== null;
+  btn.classList.add('active', isTech ? 'tech-active' : 'math-active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
