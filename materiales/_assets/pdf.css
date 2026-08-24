@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --ink:#16181d;
+  --ink-soft:#4a4e58;
+  --line:#d8d9d4;
+  --math:#5b4bd6;
+  --math-soft:#eeecfb;
+  --tech:#0d8a7a;
+  --tech-soft:#e6f5f2;
+}
+*{box-sizing:border-box;}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  line-height:1.55;
+  font-size:12.5pt;
+  max-width:800px;
+  margin:0 auto;
+  padding:36px 44px 60px;
+}
+h1{
+  font-size:20pt; font-weight:800; margin:0 0 4px;
+  padding-bottom:10px; border-bottom:3px solid var(--math);
+}
+h2{
+  font-size:14.5pt; font-weight:700; margin:26px 0 10px;
+  color:var(--math);
+}
+h3{ font-size:12.5pt; font-weight:700; margin:18px 0 6px; }
+p{ margin:8px 0; }
+strong{ font-weight:700; }
+em{ font-style:italic; }
+ul,ol{ margin:8px 0; padding-left:22px; }
+li{ margin-bottom:4px; }
+blockquote{
+  margin:14px 0; padding:10px 16px;
+  background:var(--math-soft); border-left:4px solid var(--math);
+  border-radius:4px;
+}
+blockquote p{ margin:4px 0; }
+table{
+  border-collapse:collapse; width:100%; margin:14px 0; font-size:11pt;
+}
+th,td{ border:1px solid var(--line); padding:6px 10px; text-align:left; }
+th{ background:#f4f4f2; font-weight:700; }
+code{
+  font-family:'IBM Plex Mono',monospace; font-size:0.92em;
+  background:#f4f4f2; padding:1px 5px; border-radius:4px;
+}
+pre{
+  font-family:'IBM Plex Mono',monospace; background:#181c22; color:#e6edf3;
+  padding:12px 14px; border-radius:8px; overflow-x:auto; font-size:10.5pt;
+}
+pre code{ background:none; padding:0; color:inherit; }
+hr{ border:none; border-top:1.5px solid var(--line); margin:24px 0; }
+.katex-display{ margin:10px 0 !important; }
+header.title-block{ display:none; }
+
+/* eyebrow line (first italic paragraph right under h1, from "**Semestre..." bold line) */
+h1 + p{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5pt; letter-spacing:.03em;
+  color:var(--ink-soft); text-transform:uppercase; margin:6px 0 20px;
+}
+
+@media print{
+  body{ padding:0 6mm; }
+  h2{ break-after:avoid; }
+  table, blockquote, pre{ break-inside:avoid; }
+}
