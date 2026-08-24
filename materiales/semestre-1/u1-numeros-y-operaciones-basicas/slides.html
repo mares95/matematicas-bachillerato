@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad 1 — Números y operaciones básicas</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="../../_assets/slides.css">
+</head>
+<body class="theme-math">
+<div class="deck">
+
+  <section class="slide title">
+    <span class="badge">SEMESTRE 1 · PENSAMIENTO MATEMÁTICO I</span>
+    <h1>Unidad 1<br>Números y operaciones básicas</h1>
+    <p class="lead">Aritmética y Álgebra · Bachillerato</p>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">Objetivo</p>
+    <h1>¿Qué vamos a lograr?</h1>
+    <div class="body-area">
+      <ul>
+        <li>Aplicar la <strong>jerarquía de operaciones</strong>, con y sin calculadora</li>
+        <li>Dominar las <strong>leyes de los exponentes</strong> (enteros y fraccionarios)</li>
+        <li>Operar con <strong>fracciones y decimales</strong> con soltura</li>
+        <li>Usar <strong>MCD y mcm</strong> para resolver problemas</li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">Para arrancar</p>
+    <h1>¿Por qué la gente discute en redes sociales?</h1>
+    <div class="body-area">
+      <div class="formula formula-lg">6 ÷ 2 (1 + 2) = ?</div>
+      <p class="lead">Algunas personas responden 1, otras 9. Antes de seguir: ¿tú qué obtienes, y por qué?</p>
+      <div class="callout"><span class="tag">Discusión</span>Guarda tu respuesta — la resolvemos juntos en un par de diapositivas.</div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">1. Conjuntos numéricos</p>
+    <h1>ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ</h1>
+    <div class="body-area split">
+      <div class="diagram">
+        <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="170" cy="150" r="140" fill="#eeecfb" stroke="#5b4bd6" stroke-width="2"/>
+          <circle cx="170" cy="150" r="100" fill="#ffffff" stroke="#5b4bd6" stroke-width="2"/>
+          <circle cx="170" cy="150" r="60"  fill="#eeecfb" stroke="#5b4bd6" stroke-width="2"/>
+          <circle cx="170" cy="150" r="25"  fill="#ffffff" stroke="#5b4bd6" stroke-width="2"/>
+          <text x="53" y="107" font-size="22" font-weight="700" fill="#16181d" text-anchor="middle">ℝ</text>
+          <text x="255" y="65" font-size="20" font-weight="700" fill="#16181d" text-anchor="middle">𝕀</text>
+          <text x="143" y="80" font-size="20" font-weight="700" fill="#16181d" text-anchor="middle">ℚ</text>
+          <text x="156" y="116" font-size="18" font-weight="700" fill="#16181d" text-anchor="middle">ℤ</text>
+          <text x="170" y="155" font-size="16" font-weight="700" fill="#16181d" text-anchor="middle">ℕ</text>
+        </svg>
+      </div>
+      <div>
+        <ul>
+          <li><strong>ℕ</strong> naturales: 0, 1, 2, 3, …</li>
+          <li><strong>ℤ</strong> enteros: incluyen negativos</li>
+          <li><strong>ℚ</strong> racionales: fracciones a/b</li>
+          <li><strong>𝕀</strong> irracionales: decimal infinito no periódico (√2, π)</li>
+          <li><strong>ℝ</strong> reales = ℚ ∪ 𝕀</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">2. Jerarquía de operaciones</p>
+    <h1>El orden sí importa</h1>
+    <div class="body-area split">
+      <div class="diagram">
+        <svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0L10,5L0,10z" fill="#5b4bd6"/>
+            </marker>
+          </defs>
+          <line x1="190" y1="66"  x2="190" y2="88"  stroke="#5b4bd6" stroke-width="3" marker-end="url(#arrow)"/>
+          <line x1="190" y1="146" x2="190" y2="168" stroke="#5b4bd6" stroke-width="3" marker-end="url(#arrow)"/>
+          <line x1="190" y1="226" x2="190" y2="248" stroke="#5b4bd6" stroke-width="3" marker-end="url(#arrow)"/>
+          <g>
+            <rect x="40" y="10" width="300" height="56" rx="12" fill="#eeecfb" stroke="#5b4bd6" stroke-width="2"/>
+            <circle cx="70" cy="38" r="17" fill="#5b4bd6"/><text x="70" y="44" font-size="17" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+            <text x="100" y="44" font-size="16" fill="#16181d" font-weight="600">Paréntesis / agrupación</text>
+          </g>
+          <g>
+            <rect x="40" y="90" width="300" height="56" rx="12" fill="#eeecfb" stroke="#5b4bd6" stroke-width="2"/>
+            <circle cx="70" cy="118" r="17" fill="#5b4bd6"/><text x="70" y="124" font-size="17" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+            <text x="100" y="124" font-size="16" fill="#16181d" font-weight="600">Potencias y raíces</text>
+          </g>
+          <g>
+            <rect x="40" y="170" width="300" height="56" rx="12" fill="#eeecfb" stroke="#5b4bd6" stroke-width="2"/>
+            <circle cx="70" cy="198" r="17" fill="#5b4bd6"/><text x="70" y="204" font-size="17" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+            <text x="100" y="204" font-size="16" fill="#16181d" font-weight="600">Multiplicación y división</text>
+          </g>
+          <g>
+            <rect x="40" y="250" width="300" height="56" rx="12" fill="#eeecfb" stroke="#5b4bd6" stroke-width="2"/>
+            <circle cx="70" cy="278" r="17" fill="#5b4bd6"/><text x="70" y="284" font-size="17" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+            <text x="100" y="284" font-size="16" fill="#16181d" font-weight="600">Suma y resta</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <p>Dentro de un mismo nivel (3 y 4), se resuelve de <strong>izquierda a derecha</strong>.</p>
+        <div class="formula">$$8 + 2\times(5-3)^3\div4$$</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">Ejemplo resuelto</p>
+    <h1>Paso a paso</h1>
+    <div class="body-area">
+      <div class="formula formula-lg">$$8+2\times(5-3)^3\div4$$</div>
+      <ol>
+        <li>Paréntesis: $(5-3)=2$ → $8+2\times2^3\div4$</li>
+        <li>Potencia: $2^3=8$ → $8+2\times8\div4$</li>
+        <li>Multiplicación/división (izq→der): $2\times8=16$, $16\div4=4$ → $8+4$</li>
+        <li>Suma: $8+4=\mathbf{12}$</li>
+      </ol>
+      <div class="callout"><span class="tag">Volviendo al reto</span>$6\div2(1+2) = 6\div2\times3 = 3\times3 = 9$ (multiplicación y división van de izquierda a derecha)</div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">3. Leyes de los exponentes</p>
+    <h1>Seis reglas que lo resuelven todo</h1>
+    <div class="body-area">
+      <div class="formula">$$a^m\cdot a^n=a^{m+n}\qquad a^m\div a^n=a^{m-n}\qquad (a^m)^n=a^{mn}$$</div>
+      <div class="formula">$$(ab)^n=a^nb^n\qquad a^0=1\ (a\neq0)\qquad a^{-n}=\dfrac{1}{a^n}$$</div>
+      <div class="formula formula-lg">$$a^{m/n}=\sqrt[n]{a^m}$$</div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">Ejemplo resuelto</p>
+    <h1>Exponente fraccionario</h1>
+    <div class="body-area">
+      <div class="formula formula-lg">$$27^{2/3}=\left(\sqrt[3]{27}\right)^2=3^2=9$$</div>
+      <p class="lead">¿A qué número elevado al cubo da 27? A 3. Después elevamos ese 3 al cuadrado.</p>
+      <div class="callout warn"><span class="tag">Reto</span>¿Puedes resolver $16^{3/4}$ sin calculadora?</div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">4. Fracciones</p>
+    <h1>Suma, resta, multiplicación y división</h1>
+    <div class="body-area">
+      <div class="formula">$$\frac{2}{3}+\frac{1}{4}=\frac{8}{12}+\frac{3}{12}=\frac{11}{12}$$</div>
+      <ul>
+        <li><strong>Multiplicación:</strong> numerador × numerador, denominador × denominador</li>
+        <li><strong>División:</strong> se multiplica por el recíproco de la segunda fracción</li>
+        <li><strong>Fracción ↔ decimal:</strong> dividir numerador ÷ denominador (y viceversa)</li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">5. Propiedades de los reales</p>
+    <h1>Conmutativa, asociativa, distributiva</h1>
+    <div class="body-area">
+      <div class="formula">$$a+b=b+a \qquad a\cdot b=b\cdot a \quad\text{(conmutativa)}$$</div>
+      <div class="formula">$$(a+b)+c=a+(b+c) \quad\text{(asociativa)}$$</div>
+      <div class="formula">$$a\cdot(b+c)=a\cdot b+a\cdot c \quad\text{(distributiva)}$$</div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">6. MCD y mcm</p>
+    <h1>¿Cuál uso y cuándo?</h1>
+    <div class="body-area split">
+      <div>
+        <div class="callout"><span class="tag">MCD</span>El mayor número que divide a ambos. Sirve para <strong>simplificar</strong> fracciones.</div>
+        <div class="callout"><span class="tag">mcm</span>El menor múltiplo común. Sirve para <strong>sumar/restar</strong> fracciones con distinto denominador.</div>
+      </div>
+      <div>
+        <div class="formula">$$\text{MCD}(12,18)=6$$</div>
+        <div class="formula">$$\text{mcm}(12,18)=36$$</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide">
+    <p class="eyebrow">Problema contextualizado</p>
+    <h1>Un celular a plazos</h1>
+    <div class="body-area">
+      <p class="lead">Cuesta $17,500. Anticipo del 10% y al resto se le agrega 5% de interés. ¿Cuánto se paga en total?</p>
+      <ol>
+        <li>Anticipo: $17{,}500\times0.10=1{,}750$</li>
+        <li>Resto: $17{,}500-1{,}750=15{,}750$</li>
+        <li>Interés: $15{,}750\times0.05=787.5$</li>
+        <li>Total: $1{,}750+15{,}750+787.5=\mathbf{\$18{,}287.5}$</li>
+      </ol>
+    </div>
+    <div class="slide-footer"><span>Unidad 1 · Números y operaciones básicas</span><span></span></div>
+  </section>
+
+  <section class="slide closing">
+    <p class="eyebrow">Cierre</p>
+    <h1>Lo esencial de la unidad</h1>
+    <div class="body-area">
+      <p>( ) → potencias/raíces → ×÷ → +− &nbsp;·&nbsp; $a^{m/n}=\sqrt[n]{a^m}$ &nbsp;·&nbsp; MCD simplifica, mcm suma</p>
+    </div>
+    <div class="callout"><span class="tag">Siguiente paso</span>Resuelve la guía de ejercicios de la Unidad 1 (apuntes.pdf y guia-ejercicios.pdf en el portal).</div>
+  </section>
+
+</div>
+
+<div class="navbar">
+  <button id="prev">‹ Anterior</button>
+  <span id="counter"></span>
+  <button id="next">Siguiente ›</button>
+  <button id="fullscreen">⛶</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../_assets/slides.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ]
+    });
+    initDeck();
+  });
+</script>
+</body>
+</html>
